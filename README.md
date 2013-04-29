@@ -1,5 +1,7 @@
 # Aitch
 
+[![Build Status](https://travis-ci.org/fnando/aitch.png)](https://travis-ci.org/fnando/aitch)
+
 A simple HTTP client.
 
 Features:
