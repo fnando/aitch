@@ -1,7 +1,7 @@
 module Aitch
   class Request
-    def initialize(method, url, args = {}, headers = {}, options = {})
-      @method = method
+    def initialize(request_method, url, args = {}, headers = {}, options = {})
+      @request_method = request_method
       @url = url
       @args = args
       @headers = headers
@@ -20,7 +20,7 @@ module Aitch
       raise TooManyRedirectsError if redirect.enabled? && response.redirect?
 
       response
-    rescue Net::ReadTimeout
+    rescue timeout_exception
       raise RequestTimeoutError
     end
 
@@ -49,15 +49,17 @@ module Aitch
     end
 
     def http_method_class
-      Net::HTTP.const_get(@method.to_s.capitalize)
+      Net::HTTP.const_get(@request_method.to_s.capitalize)
     rescue NameError
-      raise InvalidHTTPMethodError, "unexpected HTTP verb: #{@method.inspect}"
+      raise InvalidHTTPMethodError, "unexpected HTTP verb: #{@request_method.inspect}"
     end
 
     private
     def set_body(request)
-      if  @args.respond_to?(:to_h)
+      if @args.respond_to?(:to_h)
         request.form_data = @args.to_h
+      elsif @args.kind_of?(Hash)
+        request.form_data = @args
       else
         request.body = @args.to_s
       end
@@ -94,6 +96,10 @@ module Aitch
 
     def set_gzip(request)
       request["Accept-Encoding"] = "gzip,deflate"
+    end
+
+    def timeout_exception
+      defined?(Net::ReadTimeout) ? Net::ReadTimeout : Timeout::Error
     end
   end
 end

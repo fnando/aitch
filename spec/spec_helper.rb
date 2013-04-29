@@ -8,3 +8,9 @@ require "fakeweb"
 require "nokogiri"
 
 FakeWeb.allow_net_connect = false
+
+RSpec.configure do |config|
+  config.filter_run_excluding :ruby => -> version {
+    !(RUBY_VERSION.to_s =~ /^#{version.to_s}/)
+  }
+end

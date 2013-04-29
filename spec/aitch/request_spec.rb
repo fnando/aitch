@@ -7,9 +7,18 @@ describe Aitch::Request do
     }.to raise_error(Aitch::InvalidURIError)
   end
 
-  it "raises on timeout" do
+  it "raises on timeout", ruby: 2.0 do
     request = Aitch::Request.new("post", "http://example.org")
     request.stub_chain(:client, :request).and_raise(Net::ReadTimeout)
+
+    expect {
+      request.perform
+    }.to raise_error(Aitch::RequestTimeoutError)
+  end
+
+  it "raises on timeout", ruby: 1.9 do
+    request = Aitch::Request.new("post", "http://example.org")
+    request.stub_chain(:client, :request).and_raise(Timeout::Error)
 
     expect {
       request.perform
@@ -44,7 +53,6 @@ describe Aitch::Request do
   it "sets request body from to_h protocol" do
     data = stub(to_h: {a: 1})
     request = Aitch::Request.new("post", "http://example.org/", data).request
-
     expect(request.body).to eql("a=1")
   end
 
