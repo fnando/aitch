@@ -4,6 +4,8 @@
 
 [![CodeClimate](https://codeclimate.com/github/fnando/aitch.png)](https://codeclimate.com/github/fnando/aitch/)
 
+[![RubyGems](https://badge.fury.io/rb/aitch.png)](https://rubygems.org/gems/aitch)
+
 A simple HTTP client.
 
 Features:
