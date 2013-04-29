@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/fnando/aitch.png)](https://travis-ci.org/fnando/aitch)
 
+[![CodeClimate](https://codeclimate.com/github/fnando/aitch.png)](https://codeclimate.com/github/fnando/aitch/Aitch)
+
 A simple HTTP client.
 
 Features:
