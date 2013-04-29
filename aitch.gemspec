@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Aitch::VERSION
   spec.authors       = ["Nando Vieira"]
   spec.email         = ["fnando.vieira@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = "A simple HTTP client"
+  spec.summary       = spec.description
+  spec.homepage      = "http://rubygems.org/gems/aitch"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
