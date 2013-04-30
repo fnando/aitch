@@ -1,16 +1,24 @@
 module Aitch
   class Request
-    def initialize(request_method, url, args = {}, headers = {}, options = {})
-      @request_method = request_method
-      @url = url
-      @args = args
-      @headers = headers
-      @options = options
+    attr_accessor :config
+    attr_accessor :request_method
+    attr_accessor :url
+    attr_accessor :data
+    attr_accessor :headers
+    attr_accessor :options
+
+    def initialize(options)
+      options.each do |name, value|
+        public_send("#{name}=", value)
+      end
+
+      self.headers ||= {}
+      self.options ||= {}
     end
 
     def perform
-      response = Response.new(client.request(request))
-      redirect = Redirect.new
+      response = Response.new(config, client.request(request))
+      redirect = Redirect.new(config)
 
       while redirect.follow?(response)
         redirect.followed!
@@ -43,37 +51,37 @@ module Aitch
     end
 
     def uri
-      @uri ||= URI.parse(@url)
+      @uri ||= URI.parse(url)
     rescue URI::InvalidURIError
       raise InvalidURIError
     end
 
     def http_method_class
-      Net::HTTP.const_get(@request_method.to_s.capitalize)
+      Net::HTTP.const_get(request_method.to_s.capitalize)
     rescue NameError
-      raise InvalidHTTPMethodError, "unexpected HTTP verb: #{@request_method.inspect}"
+      raise InvalidHTTPMethodError, "unexpected HTTP verb: #{request_method.inspect}"
     end
 
     private
     def set_body(request)
-      if @args.respond_to?(:to_h)
-        request.form_data = @args.to_h
-      elsif @args.kind_of?(Hash)
-        request.form_data = @args
+      if data.respond_to?(:to_h)
+        request.form_data = data.to_h
+      elsif data.kind_of?(Hash)
+        request.form_data = data
       else
-        request.body = @args.to_s
+        request.body = data.to_s
       end
     end
 
     def set_headers(request)
-      all_headers = Aitch.configuration.default_headers.merge(@headers)
+      all_headers = config.default_headers.merge(headers)
       all_headers.each do |name, value|
         request[name.to_s] = value.to_s
       end
     end
 
     def set_credentials(request)
-      request.basic_auth(@options[:user], @options[:password]) if @options[:user]
+      request.basic_auth(options[:user], options[:password]) if options[:user]
     end
 
     def set_https(client)
@@ -82,16 +90,16 @@ module Aitch
     end
 
     def set_timeout(client)
-      client.read_timeout = Aitch.configuration.timeout
+      client.read_timeout = config.timeout
     end
 
     def set_logger(client)
-      logger = Aitch.configuration.logger
+      logger = config.logger
       client.set_debug_output(logger) if logger
     end
 
     def set_user_agent(request)
-      request["User-Agent"] = Aitch.configuration.user_agent
+      request["User-Agent"] = config.user_agent
     end
 
     def set_gzip(request)

@@ -4,7 +4,8 @@ module Aitch
 
     def_delegators :@http_response, :content_type
 
-    def initialize(http_response)
+    def initialize(config, http_response)
+      @config = config
       @http_response = http_response
     end
 
@@ -46,9 +47,9 @@ module Aitch
 
     def data
       if json?
-        Aitch.configuration.json_parser.load(body)
+        @config.json_parser.load(body)
       elsif xml?
-        Aitch.configuration.xml_parser.load(body)
+        @config.xml_parser.load(body)
       else
         body
       end

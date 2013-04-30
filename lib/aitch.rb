@@ -3,6 +3,7 @@ require "forwardable"
 require "json"
 require "zlib"
 
+require "aitch/namespace"
 require "aitch/configuration"
 require "aitch/errors"
 require "aitch/request"
@@ -14,34 +15,25 @@ require "aitch/xml_parser"
 require "aitch/version"
 
 module Aitch
-  extend self
+  class << self
+    extend Forwardable
 
-  def execute(method, url, args = {}, headers = {}, options = {})
-    Request.new(method, url, args, headers, options).perform
+    def_delegators :namespace,
+      :configuration, :config,
+      :get, :get!,
+      :post, :post!,
+      :put, :put!,
+      :patch, :patch!,
+      :options, :options!,
+      :trace, :trace!,
+      :head, :head!,
+      :delete, :delete!,
+      :execute, :execute!,
+      :configure
   end
 
-  def execute!(*args)
-    response = execute(*args)
-    raise response.error if response.error?
-    response
-  end
-
-  %w[
-    get
-    post
-    put
-    patch
-    delete
-    options
-    trace
-    head
-  ].each do |method_name|
-    define_method(method_name) do |url, args = {}, headers = {}, options = {}|
-      execute(method_name, url, args, headers, options)
-    end
-
-    define_method("#{method_name}!") do |url, args = {}, headers = {}, options = {}|
-      execute!(method_name, url, args, headers, options)
-    end
+  private
+  def self.namespace
+    @namespace ||= Namespace.new
   end
 end

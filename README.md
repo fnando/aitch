@@ -130,6 +130,20 @@ Aitch.get("http://restrict.example.org/", {}, {}, user: "john", password: "test"
 Aitch.get("http://example.org", {}, {"User-Agent" => "MyBot/1.0.0"})
 ```
 
+### Creating namespaced requests
+
+Sometimes you don't want to use the global settings (maybe you're building a
+lib). In this case, you can instantiate the namespace.
+
+```ruby
+Request = Aitch::Namespace.new
+Request.configure do |config|
+  config.user_agent = "MyLib/1.0.0"
+end
+
+Request.get("http://example.org")
+```
+
 ## Contributing
 
 1. Fork it

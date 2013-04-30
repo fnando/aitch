@@ -37,12 +37,4 @@ module Aitch
       @xml_parser = XMLParser
     end
   end
-
-  def self.configure(&block)
-    yield configuration
-  end
-
-  def self.configuration
-    @configuration ||= Configuration.new
-  end
 end

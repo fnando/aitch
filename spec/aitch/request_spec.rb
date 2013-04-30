@@ -1,14 +1,22 @@
 require "spec_helper"
 
 describe Aitch::Request do
+  def build_request(options = {})
+    Aitch::Request.new({
+      request_method: "get",
+      url: "URL",
+      config: Aitch::Configuration.new
+    }.merge(options))
+  end
+
   it "raises with invalid uri" do
     expect {
-      Aitch::Request.new("post", "\\").uri
+      build_request(url: "\\").uri
     }.to raise_error(Aitch::InvalidURIError)
   end
 
   it "raises on timeout", ruby: 2.0 do
-    request = Aitch::Request.new("post", "http://example.org")
+    request = build_request(request_method: "post", url: "http://example.org")
     request.stub_chain(:client, :request).and_raise(Net::ReadTimeout)
 
     expect {
@@ -17,7 +25,7 @@ describe Aitch::Request do
   end
 
   it "raises on timeout", ruby: 1.9 do
-    request = Aitch::Request.new("post", "http://example.org")
+    request = build_request(request_method: "post", url: "http://example.org")
     request.stub_chain(:client, :request).and_raise(Timeout::Error)
 
     expect {
@@ -26,56 +34,59 @@ describe Aitch::Request do
   end
 
   it "sets user agent" do
-    request = Aitch::Request.new("post", "http://example.org/some/path").request
-    expect(request["User-Agent"]).to eql(Aitch.configuration.user_agent)
+    requester = build_request
+    request = requester.request
+    expect(request["User-Agent"]).to eql(requester.config.user_agent)
   end
 
   it "requests gzip encoding" do
-    request = Aitch::Request.new("get", "http://example.org").request
+    request = build_request.request
     expect(request["Accept-Encoding"]).to eql("gzip,deflate")
   end
 
   it "sets path" do
-    request = Aitch::Request.new("post", "http://example.org/some/path").request
+    request = build_request(url: "http://example.org/some/path").request
     expect(request.path).to eql("/some/path")
   end
 
   it "sets request body from hash" do
-    request = Aitch::Request.new("post", "http://example.org/", {a: 1}).request
+    request = build_request(data: {a: 1}).request
     expect(request.body).to eql("a=1")
   end
 
   it "sets request body from string" do
-    request = Aitch::Request.new("post", "http://example.org/", "some body").request
+    request = build_request(data: "some body").request
     expect(request.body).to eql("some body")
   end
 
   it "sets request body from to_h protocol" do
     data = stub(to_h: {a: 1})
-    request = Aitch::Request.new("post", "http://example.org/", data).request
+    request = build_request(data: data).request
     expect(request.body).to eql("a=1")
   end
 
   it "sets request body from to_s protocol" do
     data = stub(to_s: "some body")
-    request = Aitch::Request.new("post", "http://example.org/", data).request
+    request = build_request(data: data).request
 
     expect(request.body).to eql("some body")
   end
 
   it "sets default headers" do
-    Aitch.configuration.default_headers = {"HEADER" => "VALUE"}
-    request = Aitch::Request.new("post", "http://example.org/").request
+    requester = build_request
+    requester.config.default_headers = {"HEADER" => "VALUE"}
+    request = requester.request
+
     expect(request["HEADER"]).to eql("VALUE")
   end
 
   it "sets custom headers" do
-    request = Aitch::Request.new("post", "http://example.org/", {}, {"HEADER" => "VALUE"}).request
+    request = build_request(headers: {"HEADER" => "VALUE"}).request
     expect(request["HEADER"]).to eql("VALUE")
   end
 
   it "sets basic auth credentials" do
-    request = Aitch::Request.new("post", "http://example.org/", {}, {}, {user: "USER", password: "PASS"}).request
+    request = build_request(options: {user: "USER", password: "PASS"}).request
     credentials = Base64.decode64(request["Authorization"].gsub(/Basic /, ""))
 
     expect(credentials).to eql("USER:PASS")
@@ -83,9 +94,8 @@ describe Aitch::Request do
 
   describe "#client" do
     context "https" do
-      subject(:client) {
-        Aitch::Request.new("get", "https://example.org").client
-      }
+      let(:request) { build_request(url: "https://example.org") }
+      subject(:client) { request.client }
 
       it "sets https" do
         expect(client.use_ssl?).to be_true
@@ -96,7 +106,7 @@ describe Aitch::Request do
       end
 
       it "sets timeout" do
-        Aitch.configuration.timeout = 20
+        request.config.timeout = 20
         expect(client.read_timeout).to eql(20)
       end
     end
@@ -105,7 +115,7 @@ describe Aitch::Request do
   describe "Request class" do
     it "raises with invalid method" do
       expect {
-        Aitch::Request.new("invalid", "URL").request
+        build_request(request_method: "invalid").request
       }.to raise_error(Aitch::InvalidHTTPMethodError, %[unexpected HTTP verb: "invalid"])
     end
 
@@ -120,7 +130,7 @@ describe Aitch::Request do
       trace
     ].each do |method|
       it "instantiates #{method.upcase} method" do
-        request = Aitch::Request.new(method, "URL").request
+        request = build_request(request_method: method).request
         expect(request.class.name).to eql("Net::HTTP::#{method.capitalize}")
       end
     end

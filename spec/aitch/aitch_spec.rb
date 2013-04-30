@@ -20,25 +20,36 @@ describe Aitch do
     it { should respond_to(:trace!) }
     it { should respond_to(:execute) }
     it { should respond_to(:execute!) }
+    it { should respond_to(:config) }
+    it { should respond_to(:configuration) }
   end
 
   describe "#execute" do
     let(:request) { mock.as_null_object }
 
     it "delegates to Request" do
+      expected = {
+        config: Aitch.config,
+        request_method: "get",
+        url: "URL",
+        data: "DATA",
+        headers: "HEADERS",
+        options: "OPTIONS"
+      }
+
       Aitch::Request
         .should_receive(:new)
-        .with("METHOD", "URL", "ARGS", "HEADERS", "OPTIONS")
+        .with(expected)
         .and_return(request)
 
-      Aitch.execute("METHOD", "URL", "ARGS", "HEADERS", "OPTIONS")
+      Aitch.get("URL", "DATA", "HEADERS", "OPTIONS")
     end
 
     it "performs request" do
       Aitch::Request.stub new: request
       request.should_receive(:perform)
 
-      Aitch.execute("METHOD", "URL")
+      Aitch.get("URL")
     end
   end
 
@@ -47,7 +58,7 @@ describe Aitch do
       response = stub(error?: false)
       Aitch::Request.any_instance.stub perform: response
 
-      expect(Aitch.execute!("METHOD", "URL")).to eql(response)
+      expect(Aitch.get!("URL")).to eql(response)
     end
 
     it "raises when has errors" do
@@ -55,7 +66,7 @@ describe Aitch do
       Aitch::Request.any_instance.stub perform: response
 
       expect {
-        Aitch.execute!("METHOD", "URL")
+        Aitch.get!("URL")
       }.to raise_error("ERROR")
     end
   end
