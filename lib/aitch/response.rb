@@ -9,6 +9,14 @@ module Aitch
       @http_response = http_response
     end
 
+    ERRORS.each do |status_code, exception|
+      method_name = Utils.underscore(exception.name.split("::").last).gsub("_error", "")
+
+      define_method "#{method_name}?" do
+        code == status_code
+      end
+    end
+
     def code
       @http_response.code.to_i
     end

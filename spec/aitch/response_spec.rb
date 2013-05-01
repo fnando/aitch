@@ -177,4 +177,15 @@ describe Aitch::Response do
       expect(response.data).to be_a(Nokogiri::XML::Document)
     end
   end
+
+  Aitch::Response::ERRORS.each do |code, exception|
+    name = Aitch::Utils.underscore(exception.name.split("::").last).gsub("_error", "")
+
+    it "detects response as #{name}" do
+      config = mock
+      http_response = stub(code: code)
+      response = Aitch::Response.new(config, http_response)
+      expect(response.public_send("#{name}?")).to be_true
+    end
+  end
 end
