@@ -4,6 +4,7 @@ require "json"
 require "zlib"
 
 require "aitch/utils"
+require "aitch/uri"
 require "aitch/namespace"
 require "aitch/configuration"
 require "aitch/errors"

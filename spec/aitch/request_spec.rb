@@ -4,7 +4,7 @@ describe Aitch::Request do
   def build_request(options = {})
     Aitch::Request.new({
       request_method: "get",
-      url: "URL",
+      url: "http://example.org",
       config: Aitch::Configuration.new
     }.merge(options))
   end
@@ -50,26 +50,33 @@ describe Aitch::Request do
   end
 
   it "sets request body from hash" do
-    request = build_request(data: {a: 1}).request
+    request = build_request(request_method: "post", data: {a: 1}).request
     expect(request.body).to eql("a=1")
   end
 
   it "sets request body from string" do
-    request = build_request(data: "some body").request
+    request = build_request(request_method: "post", data: "some body").request
     expect(request.body).to eql("some body")
   end
 
   it "sets request body from to_h protocol" do
     data = stub(to_h: {a: 1})
-    request = build_request(data: data).request
+    request = build_request(request_method: "post", data: data).request
     expect(request.body).to eql("a=1")
   end
 
   it "sets request body from to_s protocol" do
     data = stub(to_s: "some body")
-    request = build_request(data: data).request
+    request = build_request(request_method: "post", data: data).request
 
     expect(request.body).to eql("some body")
+  end
+
+  it "sets query string from hash data" do
+    FakeWeb.register_uri :get, "http://example.org/?a=1&b=2", body: "hello"
+    requester = build_request(data: {a: 1, b: 2})
+
+    expect(requester.perform.body).to eql("hello")
   end
 
   it "sets default headers" do
@@ -160,6 +167,15 @@ describe Aitch::Request do
       expect {
         Aitch.get("http://example.org/")
       }.to raise_error(Aitch::TooManyRedirectsError)
+    end
+  end
+
+  describe "GET requests" do
+    it "sets data as query string" do
+      FakeWeb.register_uri(:get, %r[.+], body: "")
+      Aitch.get("http://example.org/", a: 1, b: 2)
+
+      expect(FakeWeb.last_request.path).to eql("/?a=1&b=2")
     end
   end
 end

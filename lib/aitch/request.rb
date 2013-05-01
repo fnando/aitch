@@ -33,8 +33,8 @@ module Aitch
     end
 
     def request
-      @request ||= http_method_class.new(File.join("/", uri.path)).tap do |request|
-        set_body(request)
+      @request ||= http_method_class.new(uri.request_uri).tap do |request|
+        set_body(request) if request.request_body_permitted?
         set_user_agent(request)
         set_gzip(request)
         set_headers(request)
@@ -51,9 +51,7 @@ module Aitch
     end
 
     def uri
-      @uri ||= URI.parse(url)
-    rescue URI::InvalidURIError
-      raise InvalidURIError
+      @uri ||= URI.new(url, data, http_method_class::REQUEST_HAS_BODY)
     end
 
     def http_method_class
