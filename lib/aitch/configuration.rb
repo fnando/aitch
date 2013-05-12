@@ -27,6 +27,9 @@ module Aitch
     # Set the XML parser.
     attr_accessor :xml_parser
 
+    # Set the HTML parser.
+    attr_accessor :html_parser
+
     def initialize
       @timeout = 10
       @redirect_limit = 5
@@ -35,6 +38,7 @@ module Aitch
       @default_headers = {}
       @json_parser = JSON
       @xml_parser = XMLParser
+      @html_parser = HTMLParser
     end
   end
 end

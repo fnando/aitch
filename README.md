@@ -10,7 +10,7 @@ A simple HTTP client.
 Features:
 
 * Supports Gzip|Deflate response
-* Automatically parses JSON and XML responses
+* Automatically parses JSON, HTML and XML responses
 * Automatically follows redirect
 
 ## Installation
@@ -60,6 +60,9 @@ Aitch.configure do |config|
 
   # Set the XML parser.
   config.xml_parser = Aitch::XMLParser
+
+  # Set the HTML parser.
+  config.html_parser = Aitch::HTMLParser
 end
 ```
 
@@ -94,7 +97,21 @@ response.redirect?        # status 3xx
 response.error?           # status 4xx or 5xx
 response.error            # response error
 response.body             # returned body
-response.data             # JSON or XML payload
+response.data             # HTML, JSON or XML payload
+```
+
+#### Parsing XML and HTML with Nokogiri
+
+If your response is a XML or a HTML content type, we'll automatically convert the response into a Nokogiri object.
+
+```ruby
+response = Aitch.get("http://simplesideias.com.br")
+
+response.data.class
+#=> Nokogiri::HTML::Document
+
+response.data.css("h1").size
+#=> 69
 ```
 
 ### Following redirects

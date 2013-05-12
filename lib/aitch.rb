@@ -14,6 +14,7 @@ require "aitch/response/errors"
 require "aitch/response"
 require "aitch/response/body"
 require "aitch/xml_parser"
+require "aitch/html_parser"
 require "aitch/version"
 
 module Aitch

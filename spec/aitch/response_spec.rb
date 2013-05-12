@@ -158,7 +158,7 @@ describe Aitch::Response do
       FakeWeb.register_uri(:get, "http://example.org/", body: "Hello", content_type: "text/html")
       response = Aitch.get("http://example.org/")
 
-      expect(response.data).to eql("Hello")
+      expect(response.data).to be_a(Nokogiri::HTML::Document)
     end
   end
 

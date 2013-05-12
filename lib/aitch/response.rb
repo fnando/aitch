@@ -58,6 +58,8 @@ module Aitch
         @config.json_parser.load(body)
       elsif xml?
         @config.xml_parser.load(body)
+      elsif html?
+        @config.html_parser.load(body)
       else
         body
       end
