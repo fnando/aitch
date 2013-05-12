@@ -3,6 +3,9 @@ require "forwardable"
 require "json"
 require "zlib"
 
+require "nokogiri"
+require "active_support/core_ext/object/to_query"
+
 require "aitch/utils"
 require "aitch/uri"
 require "aitch/namespace"

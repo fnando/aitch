@@ -7,5 +7,9 @@ module Aitch
 
       string.downcase
     end
+
+    def build_query(data)
+      data.to_query
+    end
   end
 end

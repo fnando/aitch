@@ -62,10 +62,10 @@ module Aitch
 
     private
     def set_body(request)
-      if data.respond_to?(:to_h)
-        request.form_data = data.to_h
-      elsif data.kind_of?(Hash)
-        request.form_data = data
+      body_data = data.to_h if data.respond_to?(:to_h)
+
+      if body_data.kind_of?(Hash)
+        request.body = Utils.build_query(body_data)
       else
         request.body = data.to_s
       end
