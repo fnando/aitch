@@ -73,7 +73,9 @@ module Aitch
 
     def set_headers(request)
       all_headers = config.default_headers.merge(headers)
+
       all_headers.each do |name, value|
+        value = value.respond_to?(:call) ? value.call : value
         request[name.to_s] = value.to_s
       end
     end

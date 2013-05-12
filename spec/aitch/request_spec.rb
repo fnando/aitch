@@ -92,6 +92,11 @@ describe Aitch::Request do
     expect(request["HEADER"]).to eql("VALUE")
   end
 
+  it "executes headers with callable protocol" do
+    request = build_request(headers: {"HEADER" => -> { "VALUE" }}).request
+    expect(request["HEADER"]).to eql("VALUE")
+  end
+
   it "sets basic auth credentials" do
     request = build_request(options: {user: "USER", password: "PASS"}).request
     credentials = Base64.decode64(request["Authorization"].gsub(/Basic /, ""))

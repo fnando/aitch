@@ -148,6 +148,16 @@ Aitch.get("http://restrict.example.org/", {}, {}, user: "john", password: "test"
 Aitch.get("http://example.org", {}, {"User-Agent" => "MyBot/1.0.0"})
 ```
 
+The header value can be a callable object.
+
+```ruby
+Aitch.configure do |config|
+  config.default_headers = {
+    "Authorization" => -> { "Token token=#{ENV.fetch("API_TOKEN")}" }
+  }
+end
+```
+
 ### Creating namespaced requests
 
 Sometimes you don't want to use the global settings (maybe you're building a
