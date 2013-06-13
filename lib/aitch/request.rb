@@ -63,6 +63,7 @@ module Aitch
     private
     def set_body(request)
       body_data = data.to_h if data.respond_to?(:to_h)
+      body_data ||= data
 
       if body_data.kind_of?(Hash)
         request.body = Utils.build_query(body_data)
