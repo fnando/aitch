@@ -60,13 +60,13 @@ describe Aitch::Request do
   end
 
   it "sets request body from to_h protocol" do
-    data = stub(to_h: {a: 1})
+    data = double(to_h: {a: 1})
     request = build_request(request_method: "post", data: data).request
     expect(request.body).to eql("a=1")
   end
 
   it "sets request body from to_s protocol" do
-    data = stub(to_s: "some body")
+    data = double(to_s: "some body")
     request = build_request(request_method: "post", data: data).request
 
     expect(request.body).to eql("some body")

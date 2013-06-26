@@ -25,7 +25,7 @@ describe Aitch do
   end
 
   describe "#execute" do
-    let(:request) { mock.as_null_object }
+    let(:request) { double.as_null_object }
 
     it "delegates to Request" do
       expected = {
@@ -55,14 +55,14 @@ describe Aitch do
 
   describe "#execute!" do
     it "returns response when successful" do
-      response = stub(error?: false)
+      response = double(error?: false)
       Aitch::Request.any_instance.stub perform: response
 
       expect(Aitch.get!("URL")).to eql(response)
     end
 
     it "raises when has errors" do
-      response = stub(error?: true, error: "ERROR")
+      response = double(error?: true, error: "ERROR")
       Aitch::Request.any_instance.stub perform: response
 
       expect {

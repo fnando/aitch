@@ -182,8 +182,8 @@ describe Aitch::Response do
     name = Aitch::Utils.underscore(exception.name.split("::").last).gsub("_error", "")
 
     it "detects response as #{name}" do
-      config = mock
-      http_response = stub(code: code)
+      config = double
+      http_response = double(code: code)
       response = Aitch::Response.new(config, http_response)
       expect(response.public_send("#{name}?")).to be_true
     end
