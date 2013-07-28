@@ -5,7 +5,7 @@ describe Aitch::Request do
     Aitch::Request.new({
       request_method: "get",
       url: "http://example.org",
-      config: Aitch::Configuration.new
+      options: {}
     }.merge(options))
   end
 
@@ -36,7 +36,7 @@ describe Aitch::Request do
   it "sets user agent" do
     requester = build_request
     request = requester.request
-    expect(request["User-Agent"]).to eql(requester.config.user_agent)
+    expect(request["User-Agent"]).to eql(requester.options[:user_agent])
   end
 
   it "requests gzip encoding" do
@@ -81,7 +81,7 @@ describe Aitch::Request do
 
   it "sets default headers" do
     requester = build_request
-    requester.config.default_headers = {"HEADER" => "VALUE"}
+    requester.options[:default_headers] = {"HEADER" => "VALUE"}
     request = requester.request
 
     expect(request["HEADER"]).to eql("VALUE")
@@ -118,7 +118,7 @@ describe Aitch::Request do
       end
 
       it "sets timeout" do
-        request.config.timeout = 20
+        request.options[:timeout] = 20
         expect(client.read_timeout).to eql(20)
       end
     end

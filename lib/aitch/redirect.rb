@@ -1,9 +1,9 @@
 module Aitch
   class Redirect
-    def initialize(config)
+    def initialize(options)
       @tries = 1
-      @config = config
-      @max_tries = @config.redirect_limit
+      @options = options
+      @max_tries = @options[:redirect_limit]
     end
 
     def followed!
@@ -15,7 +15,7 @@ module Aitch
     end
 
     def enabled?
-      @config.follow_redirect
+      @options[:follow_redirect]
     end
   end
 end

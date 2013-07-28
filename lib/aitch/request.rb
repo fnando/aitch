@@ -1,6 +1,5 @@
 module Aitch
   class Request
-    attr_accessor :config
     attr_accessor :request_method
     attr_accessor :url
     attr_accessor :data
@@ -17,8 +16,8 @@ module Aitch
     end
 
     def perform
-      response = Response.new(config, client.request(request))
-      redirect = Redirect.new(config)
+      response = Response.new(options, client.request(request))
+      redirect = Redirect.new(options)
 
       while redirect.follow?(response)
         redirect.followed!
@@ -73,7 +72,7 @@ module Aitch
     end
 
     def set_headers(request)
-      all_headers = config.default_headers.merge(headers)
+      all_headers = options.fetch(:default_headers, {}).merge(headers)
 
       all_headers.each do |name, value|
         value = value.respond_to?(:call) ? value.call : value
@@ -91,16 +90,16 @@ module Aitch
     end
 
     def set_timeout(client)
-      client.read_timeout = config.timeout
+      client.read_timeout = options[:timeout]
     end
 
     def set_logger(client)
-      logger = config.logger
+      logger = options[:logger]
       client.set_debug_output(logger) if logger
     end
 
     def set_user_agent(request)
-      request["User-Agent"] = config.user_agent
+      request["User-Agent"] = options[:user_agent]
     end
 
     def set_gzip(request)

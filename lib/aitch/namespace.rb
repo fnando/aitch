@@ -10,8 +10,9 @@ module Aitch
     alias_method :configuration, :config
 
     def execute(request_method, url, data = {}, headers = {}, options = {})
+      options = config.to_h.merge(Utils.symbolize_keys(options))
+
       Request.new({
-        config: config,
         request_method: request_method,
         url: url,
         data: data,

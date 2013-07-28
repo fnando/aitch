@@ -28,13 +28,14 @@ describe Aitch do
     let(:request) { double.as_null_object }
 
     it "delegates to Request" do
+      options = {}
+
       expected = {
-        config: Aitch.config,
         request_method: "get",
         url: "URL",
         data: "DATA",
         headers: "HEADERS",
-        options: "OPTIONS"
+        options: options.merge(Aitch.config.to_h)
       }
 
       Aitch::Request
@@ -42,7 +43,7 @@ describe Aitch do
         .with(expected)
         .and_return(request)
 
-      Aitch.get("URL", "DATA", "HEADERS", "OPTIONS")
+      Aitch.get("URL", "DATA", "HEADERS", options)
     end
 
     it "performs request" do
