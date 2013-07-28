@@ -183,4 +183,25 @@ describe Aitch::Request do
       expect(FakeWeb.last_request.path).to eql("/?a=1&b=2")
     end
   end
+
+  describe "using the DSL" do
+    it "performs request" do
+      FakeWeb.register_uri(:post, %r[.+], body: "")
+
+      response = Aitch.post do
+        url "http://example.org/some/path"
+        params a: 1, b: 2
+        headers Rendering: "0.1"
+        options user: "user", password: "pass"
+      end
+
+      expect(FakeWeb.last_request.path).to eql("/some/path")
+      expect(FakeWeb.last_request.method).to eql("POST")
+      expect(FakeWeb.last_request.body).to eql("a=1&b=2")
+      expect(FakeWeb.last_request["Rendering"]).to eql("0.1")
+
+      auth = Base64.encode64("user:pass").chomp
+      expect(FakeWeb.last_request["Authorization"]).to eql("Basic #{auth}")
+    end
+  end
 end

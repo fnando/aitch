@@ -71,14 +71,25 @@ end
 Performing requests:
 
 ```ruby
-response = Aitch.get("http://example.org", params, headers)
-           Aitch.post("http://example.org", params, headers)
-           Aitch.put("http://example.org", params, headers)
-           Aitch.patch("http://example.org", params, headers)
-           Aitch.delete("http://example.org", params, headers)
-           Aitch.options("http://example.org", params, headers)
-           Aitch.trace("http://example.org", params, headers)
-           Aitch.head("http://example.org", params, headers)
+response = Aitch.get("http://example.org", params, headers, options)
+           Aitch.post("http://example.org", params, headers, options)
+           Aitch.put("http://example.org", params, headers, options)
+           Aitch.patch("http://example.org", params, headers, options)
+           Aitch.delete("http://example.org", params, headers, options)
+           Aitch.options("http://example.org", params, headers, options)
+           Aitch.trace("http://example.org", params, headers, options)
+           Aitch.head("http://example.org", params, headers, options)
+```
+
+You can also use a DSL.
+
+```ruby
+response = Aitch.get do
+  url "http://simplesideias.com.br"
+  headers Authorization: "Token token=abc"
+  options follow_redirect: false
+  params a: 1, b: 2
+end
 ```
 
 ### Response
@@ -105,7 +116,7 @@ response.json             # An alias to the Aitch::Response#data method
 
 #### Parsing JSON, XML and HTML with Nokogiri
 
-If your response is a XML or a HTML content type, we'll automatically convert the response into a Nokogiri object.
+If your response is a JSON, XML or a HTML content type, we'll automatically convert the response into the appropriate object.
 
 ```ruby
 response = Aitch.get("http://simplesideias.com.br")
@@ -149,21 +160,26 @@ The request:
 Aitch.get("http://example.org")
 ```
 
-If the redirect limit is exceeded, then the `Aitch::TooManyRedirectsError` exception
-is raised.
+If the redirect limit is exceeded, then the `Aitch::TooManyRedirectsError` exception is raised.
 
 ### Basic auth
 
 Setting basic auth credentials:
 
 ```ruby
-Aitch.get("http://restrict.example.org/", {}, {}, user: "john", password: "test")
+response = Aitch.get do
+  url "http://restrict.example.org/"
+  options: user: "john", password: "test"
+end
 ```
 
 ### Setting custom headers
 
 ```ruby
-Aitch.get("http://example.org", {}, {"User-Agent" => "MyBot/1.0.0"})
+Aitch.get do
+  url "http://example.org"
+  headers "User-Agent" => "MyBot/1.0.0"
+end
 ```
 
 The header value can be a callable object.

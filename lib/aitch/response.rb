@@ -84,5 +84,11 @@ module Aitch
     def respond_to_missing?(name, include_private = false)
       headers.key?(name.to_s)
     end
+
+    def inspect
+      "#<#{self.class} #{code} #{@http_response.msg} (#{content_type})>"
+    end
+
+    alias_method :to_s, :inspect
   end
 end

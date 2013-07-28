@@ -9,20 +9,30 @@ module Aitch
     end
     alias_method :configuration, :config
 
-    def execute(request_method, url, data = {}, headers = {}, options = {})
-      options = config.to_h.merge(Utils.symbolize_keys(options))
+    def execute(request_method = nil, url = nil, data = {}, headers = {}, options = {}, &block)
+      if block_given?
+        dsl = DSL.new
+        dsl.instance_eval(&block)
+        args = dsl.to_h
+      else
+        args = {
+          url: url,
+          data: data,
+          headers: headers,
+          options: options
+        }
+      end
 
-      Request.new({
+      args.merge!(
         request_method: request_method,
-        url: url,
-        data: data,
-        headers: headers,
-        options: options
-      }).perform
+        options: config.to_h.merge(Utils.symbolize_keys(args[:options]))
+      )
+
+      Request.new(args).perform
     end
 
-    def execute!(*args)
-      response = execute(*args)
+    def execute!(*args, &block)
+      response = execute(*args, &block)
       raise response.error if response.error?
       response
     end
@@ -37,12 +47,12 @@ module Aitch
       trace
       head
     ].each do |method_name|
-      define_method(method_name) do |url, data = {}, headers = {}, options = {}|
-        execute(method_name, url, data, headers, options)
+      define_method(method_name) do |url = nil, data = {}, headers = {}, options = {}, &block|
+        execute(method_name, url, data, headers, options, &block)
       end
 
-      define_method("#{method_name}!") do |url, data = {}, headers = {}, options = {}|
-        execute!(method_name, url, data, headers, options)
+      define_method("#{method_name}!") do |url = nil, data = {}, headers = {}, options = {}, &block|
+        execute!(method_name, url, data, headers, options, &block)
       end
     end
   end

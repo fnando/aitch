@@ -8,6 +8,7 @@ require "active_support/core_ext/object/to_query"
 
 require "aitch/utils"
 require "aitch/uri"
+require "aitch/dsl"
 require "aitch/namespace"
 require "aitch/configuration"
 require "aitch/errors"
