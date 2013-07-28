@@ -10,4 +10,10 @@ describe Aitch::Utils do
       expect(Aitch::Utils.underscore("RequestURITooLong")).to eql("request_uri_too_long")
     end
   end
+
+  describe ".symbolize_keys" do
+    it "converts keys to symbols" do
+      expect(Aitch::Utils.symbolize_keys("a" => 1)).to eql(a: 1)
+    end
+  end
 end
