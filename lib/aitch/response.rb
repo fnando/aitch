@@ -64,6 +64,9 @@ module Aitch
         body
       end
     end
+    alias_method :xml, :data
+    alias_method :html, :data
+    alias_method :json, :data
 
     def headers
       @headers ||= {}.tap do |headers|

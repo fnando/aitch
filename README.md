@@ -98,20 +98,38 @@ response.error?           # status 4xx or 5xx
 response.error            # response error
 response.body             # returned body
 response.data             # HTML, JSON or XML payload
+response.xml              # An alias to the Aitch::Response#data method
+response.html             # An alias to the Aitch::Response#data method
+response.json             # An alias to the Aitch::Response#data method
 ```
 
-#### Parsing XML and HTML with Nokogiri
+#### Parsing JSON, XML and HTML with Nokogiri
 
 If your response is a XML or a HTML content type, we'll automatically convert the response into a Nokogiri object.
 
 ```ruby
 response = Aitch.get("http://simplesideias.com.br")
 
-response.data.class
+response.html.class
 #=> Nokogiri::HTML::Document
 
-response.data.css("h1").size
+response.html.css("h1").size
 #=> 69
+
+response = Aitch.get("http://simplesideias.com.br/feed")
+
+response.xml.class
+#=> Nokogiri::XML::Document
+
+response.xml.css("item").size
+#=> 10
+
+response = Aitch.get("https://api.github.com/users/fnando")
+response.json.class
+#=> Hash
+
+response.json["login"]
+#=> fnando
 ```
 
 ### Following redirects

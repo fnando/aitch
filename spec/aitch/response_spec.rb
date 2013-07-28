@@ -138,11 +138,11 @@ describe Aitch::Response do
       expect(response).to be_json
     end
 
-    it "returns data" do
+    it "returns json" do
       FakeWeb.register_uri(:get, "http://example.org/", body: "[1,2,3]", content_type: "application/json")
       response = Aitch.get("http://example.org/")
 
-      expect(response.data).to eql([1,2,3])
+      expect(response.json).to eql([1,2,3])
     end
   end
 
@@ -154,11 +154,11 @@ describe Aitch::Response do
       expect(response).to be_html
     end
 
-    it "returns data" do
+    it "returns html" do
       FakeWeb.register_uri(:get, "http://example.org/", body: "Hello", content_type: "text/html")
       response = Aitch.get("http://example.org/")
 
-      expect(response.data).to be_a(Nokogiri::HTML::Document)
+      expect(response.html).to be_a(Nokogiri::HTML::Document)
     end
   end
 
@@ -170,11 +170,11 @@ describe Aitch::Response do
       expect(response).to be_xml
     end
 
-    it "returns data" do
+    it "returns xml" do
       FakeWeb.register_uri(:get, "http://example.org/", body: "<foo/>", content_type: "application/xml")
       response = Aitch.get("http://example.org/")
 
-      expect(response.data).to be_a(Nokogiri::XML::Document)
+      expect(response.xml).to be_a(Nokogiri::XML::Document)
     end
   end
 
