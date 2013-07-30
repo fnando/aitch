@@ -28,6 +28,7 @@ module Aitch
     def success?
       code >= 200 && code <= 399
     end
+    alias_method :ok?, :success?
 
     def redirect?
       code >= 300 && code <= 399

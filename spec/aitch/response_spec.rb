@@ -82,7 +82,9 @@ describe Aitch::Response do
     it "detects as successful response" do
       FakeWeb.register_uri(:get, "http://example.org/", status: 301)
       response = Aitch.get("http://example.org/")
+
       expect(response).to be_success
+      expect(response).to be_ok
     end
 
     it "detects as redirect" do
