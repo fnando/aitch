@@ -20,12 +20,15 @@ module Aitch
       redirect = Redirect.new(options)
 
       while redirect.follow?(response)
+        redirected_from ||= [url]
+        redirected_from << response.location
         redirect.followed!
         response = Aitch.get(response.location)
       end
 
       raise TooManyRedirectsError if redirect.enabled? && response.redirect?
 
+      response.redirected_from = redirected_from
       response
     rescue timeout_exception
       raise RequestTimeoutError

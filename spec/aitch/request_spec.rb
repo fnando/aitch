@@ -155,12 +155,14 @@ describe Aitch::Request do
       Aitch.configuration.redirect_limit = 5
 
       FakeWeb.register_uri(:get, "http://example.org/", location: "http://example.com/", status: 301)
-      FakeWeb.register_uri(:get, "http://example.com/", body: "Hello")
+      FakeWeb.register_uri(:get, "http://example.com/", location: "http://www.example.com/", status: 301)
+      FakeWeb.register_uri(:get, "http://www.example.com/", body: "Hello")
 
-      response = Aitch.get("http://example.org")
+      response = Aitch.get("http://example.org/")
 
       expect(response).not_to be_redirect
       expect(response.body).to eql("Hello")
+      expect(response.redirected_from).to eql(["http://example.org/", "http://example.com/"])
     end
 
     it "raises when doing too many redirects" do
