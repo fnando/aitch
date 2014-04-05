@@ -22,9 +22,9 @@ module Aitch
 
       while redirect.follow?(response)
         redirected_from ||= [url]
-        redirected_from << response.location
+        redirected_from << Location.new(redirected_from, response.location).location
         redirect.followed!
-        response = Aitch.get(response.location)
+        response = Aitch.get(redirected_from.last)
       end
 
       raise TooManyRedirectsError if redirect.enabled? && response.redirect?

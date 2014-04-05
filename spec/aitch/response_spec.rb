@@ -104,6 +104,21 @@ describe Aitch::Response do
       response = Aitch.get("http://example.org/")
       expect(response.location).to eql("https://example.com/")
     end
+
+    it "follows absolute paths" do
+      Aitch.configuration.follow_redirect = true
+      Aitch.configuration.redirect_limit = 5
+
+      FakeWeb.register_uri(:get, "http://example.org/", status: 301, location: "/hello")
+      FakeWeb.register_uri(:get, "http://example.org/hello", status: 301, location: "/hi")
+      FakeWeb.register_uri(:get, "http://example.org/hi", status: 200, body: "Hi")
+
+      response = Aitch.get("http://example.org/")
+
+      expect(response.redirected_from).to eql(["http://example.org/", "http://example.org/hello"])
+      expect(response.url).to eql("http://example.org/hi")
+      expect(response.body).to eql("Hi")
+    end
   end
 
   context "status 4xx" do
