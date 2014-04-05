@@ -3,7 +3,7 @@ module Aitch
     extend Forwardable
 
     def_delegators :@http_response, :content_type
-    attr_accessor :redirected_from
+    attr_accessor :redirected_from, :url
 
     def initialize(options, http_response)
       @options = options

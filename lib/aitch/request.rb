@@ -17,6 +17,7 @@ module Aitch
 
     def perform
       response = Response.new(options, client.request(request))
+      response.url = url
       redirect = Redirect.new(options)
 
       while redirect.follow?(response)

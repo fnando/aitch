@@ -7,6 +7,12 @@ describe Aitch::Response do
     expect(response.body).to eql("Hello")
   end
 
+  it "sets current url" do
+    FakeWeb.register_uri(:get, "http://example.org/", body: "Hello")
+    response = Aitch.get("http://example.org/")
+    expect(response.url).to eql("http://example.org/")
+  end
+
   it "parses gzip response" do
     stdio = StringIO.new
     gzipped = Zlib::GzipWriter.new(stdio)

@@ -163,6 +163,7 @@ describe Aitch::Request do
       expect(response).not_to be_redirect
       expect(response.body).to eql("Hello")
       expect(response.redirected_from).to eql(["http://example.org/", "http://example.com/"])
+      expect(response.url).to eql("http://www.example.com/")
     end
 
     it "raises when doing too many redirects" do
