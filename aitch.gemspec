@@ -27,5 +27,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry-meta"
   spec.add_development_dependency "test_notifier"
   spec.add_development_dependency "fakeweb"
-  spec.add_development_dependency "nokogiri"
 end
