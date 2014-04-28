@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    aitch (0.2.1)
+    aitch (0.3.0)
       activesupport
       nokogiri (>= 1.6.0)
 
