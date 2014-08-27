@@ -3,10 +3,7 @@ require "spec_helper"
 
 describe Aitch::XMLParser do
   it "instantiates Nokogiri" do
-    Nokogiri
-      .should_receive(:XML)
-      .with("XML", nil, "utf-8")
-
+    expect(Nokogiri).to receive(:XML).with("XML", nil, "utf-8")
     Aitch::XMLParser.load("XML")
   end
 

@@ -17,7 +17,7 @@ describe Aitch::Request do
 
   it "raises on timeout", ruby: 2.0 do
     request = build_request(request_method: "post", url: "http://example.org")
-    request.stub_chain(:client, :request).and_raise(Net::ReadTimeout)
+    allow(request).to receive_message_chain(:client, :request).and_raise(Net::ReadTimeout)
 
     expect {
       request.perform
@@ -26,7 +26,7 @@ describe Aitch::Request do
 
   it "raises on timeout", ruby: 1.9 do
     request = build_request(request_method: "post", url: "http://example.org")
-    request.stub_chain(:client, :request).and_raise(Timeout::Error)
+    allow(request).to receive_message_chain(:client, :request).and_raise(Timeout::Error)
 
     expect {
       request.perform
@@ -110,7 +110,7 @@ describe Aitch::Request do
       subject(:client) { request.client }
 
       it "sets https" do
-        expect(client.use_ssl?).to be_true
+        expect(client.use_ssl?).to be_truthy
       end
 
       it "sets verification mode" do

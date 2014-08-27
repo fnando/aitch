@@ -38,17 +38,14 @@ describe Aitch do
         options: options.merge(Aitch.config.to_h)
       }
 
-      Aitch::Request
-        .should_receive(:new)
-        .with(expected)
-        .and_return(request)
+      expect(Aitch::Request).to receive(:new).with(expected).and_return(request)
 
       Aitch.get("URL", "DATA", "HEADERS", options)
     end
 
     it "performs request" do
-      Aitch::Request.stub new: request
-      request.should_receive(:perform)
+      allow(Aitch::Request).to receive(:new).and_return(request)
+      expect(request).to receive(:perform)
 
       Aitch.get("URL")
     end
@@ -57,14 +54,14 @@ describe Aitch do
   describe "#execute!" do
     it "returns response when successful" do
       response = double(error?: false)
-      Aitch::Request.any_instance.stub perform: response
+      allow_any_instance_of(Aitch::Request).to receive(:perform).and_return(response)
 
       expect(Aitch.get!("URL")).to eql(response)
     end
 
     it "raises when has errors" do
       response = double(error?: true, error: "ERROR")
-      Aitch::Request.any_instance.stub perform: response
+      allow_any_instance_of(Aitch::Request).to receive(:perform).and_return(response)
 
       expect {
         Aitch.get!("URL")

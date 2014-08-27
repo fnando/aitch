@@ -208,7 +208,7 @@ describe Aitch::Response do
       config = double
       http_response = double(code: code)
       response = Aitch::Response.new(config, http_response)
-      expect(response.public_send("#{name}?")).to be_true
+      expect(response.public_send("#{name}?")).to be_truthy
     end
   end
 end
