@@ -169,7 +169,7 @@ Setting basic auth credentials:
 ```ruby
 response = Aitch.get do
   url "http://restrict.example.org/"
-  options: user: "john", password: "test"
+  options: {user: "john", password: "test"}
 end
 ```
 
