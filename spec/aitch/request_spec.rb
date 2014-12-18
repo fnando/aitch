@@ -65,7 +65,13 @@ describe Aitch::Request do
   end
 
   it "sets json body from object" do
-    request = build_request(request_method: "post", data: {a: 1}, content_type: "application/json").request
+    request = build_request(
+      request_method: "post",
+      data: {a: 1},
+      content_type: "application/json",
+      options: {json_parser: JSON}
+    ).request
+
     expect(request.body).to eql({a: 1}.to_json)
   end
 
