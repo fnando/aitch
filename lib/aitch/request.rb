@@ -7,12 +7,12 @@ module Aitch
     attr_accessor :options
 
     def initialize(options)
+      self.headers ||= {}
+      self.options ||= {}
+
       options.each do |name, value|
         public_send("#{name}=", value)
       end
-
-      self.headers ||= {}
-      self.options ||= {}
     end
 
     def perform
@@ -33,6 +33,14 @@ module Aitch
       response
     rescue timeout_exception
       raise RequestTimeoutError
+    end
+
+    def content_type=(content_type)
+      headers['Content-Type'] = content_type
+    end
+
+    def content_type
+      headers['Content-Type']
     end
 
     def request

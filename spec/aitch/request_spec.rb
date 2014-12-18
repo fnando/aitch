@@ -9,6 +9,11 @@ describe Aitch::Request do
     }.merge(options))
   end
 
+  it "sets content type" do
+    request = build_request(content_type: 'application/json')
+    expect(request.content_type).to eq('application/json')
+  end
+
   it "raises with invalid uri" do
     expect {
       build_request(url: "\\").uri
