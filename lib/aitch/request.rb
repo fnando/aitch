@@ -40,7 +40,7 @@ module Aitch
     end
 
     def content_type
-      headers['Content-Type']
+      headers['Content-Type'] || options.fetch(:default_headers, {})['Content-Type']
     end
 
     def request
