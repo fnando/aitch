@@ -73,13 +73,14 @@ module Aitch
 
     private
     def set_body(request)
+      body_data = data
       body_data = data.to_h if data.respond_to?(:to_h)
-      body_data ||= data
+      body_data = JSON.dump(body_data) if content_type.to_s =~ /\bjson\b/
 
       if body_data.kind_of?(Hash)
         request.body = Utils.build_query(body_data)
       else
-        request.body = data.to_s
+        request.body = body_data.to_s
       end
     end
 
