@@ -94,7 +94,8 @@ module Aitch
     end
 
     def set_credentials(request)
-      request.basic_auth(options[:user], options[:password]) if options[:user]
+      return unless options[:user] || options[:password]
+      request.basic_auth(options[:user], options[:password])
     end
 
     def set_https(client)

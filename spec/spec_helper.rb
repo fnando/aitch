@@ -7,10 +7,11 @@ Bundler.require
 require "aitch"
 require "base64"
 require "test_notifier/runner/rspec"
-require "fakeweb"
+require "webmock/rspec"
 require "nokogiri"
 
-FakeWeb.allow_net_connect = false
+require_relative "support/webmock"
+require_relative "support/request_uri"
 
 RSpec.configure do |config|
   config.filter_run_excluding :ruby => -> version {

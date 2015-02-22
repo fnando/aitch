@@ -56,7 +56,7 @@ describe Aitch do
       response = double(error?: false)
       allow_any_instance_of(Aitch::Request).to receive(:perform).and_return(response)
 
-      expect(Aitch.get!("URL")).to eql(response)
+      expect(Aitch.get!("URL")).to eq(response)
     end
 
     it "raises when has errors" do

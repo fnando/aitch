@@ -41,27 +41,27 @@ describe Aitch::Request do
   it "sets user agent" do
     requester = build_request
     request = requester.request
-    expect(request["User-Agent"]).to eql(requester.options[:user_agent])
+    expect(request["User-Agent"]).to eq(requester.options[:user_agent])
   end
 
   it "requests gzip encoding" do
     request = build_request.request
-    expect(request["Accept-Encoding"]).to eql("gzip,deflate")
+    expect(request["Accept-Encoding"]).to eq("gzip,deflate")
   end
 
   it "sets path" do
     request = build_request(url: "http://example.org/some/path").request
-    expect(request.path).to eql("/some/path")
+    expect(request.path).to eq("/some/path")
   end
 
   it "sets request body from hash" do
     request = build_request(request_method: "post", data: {a: 1}).request
-    expect(request.body).to eql("a=1")
+    expect(request.body).to eq("a=1")
   end
 
   it "sets request body from string" do
     request = build_request(request_method: "post", data: "some body").request
-    expect(request.body).to eql("some body")
+    expect(request.body).to eq("some body")
   end
 
   it "sets json body from object" do
@@ -72,7 +72,7 @@ describe Aitch::Request do
       options: {json_parser: JSON}
     ).request
 
-    expect(request.body).to eql({a: 1}.to_json)
+    expect(request.body).to eq({a: 1}.to_json)
   end
 
   it "sets json body from object (default headers)" do
@@ -82,27 +82,27 @@ describe Aitch::Request do
       options: {json_parser: JSON, default_headers: {'Content-Type' => 'application/json'}}
     ).request
 
-    expect(request.body).to eql({a: 1}.to_json)
+    expect(request.body).to eq({a: 1}.to_json)
   end
 
   it "sets request body from to_h protocol" do
     data = double(to_h: {a: 1})
     request = build_request(request_method: "post", data: data).request
-    expect(request.body).to eql("a=1")
+    expect(request.body).to eq("a=1")
   end
 
   it "sets request body from to_s protocol" do
     data = double(to_s: "some body")
     request = build_request(request_method: "post", data: data).request
 
-    expect(request.body).to eql("some body")
+    expect(request.body).to eq("some body")
   end
 
   it "sets query string from hash data" do
-    FakeWeb.register_uri :get, "http://example.org/?a=1&b=2", body: "hello"
+    register_uri :get, "http://example.org/?a=1&b=2", body: "hello"
     requester = build_request(data: {a: 1, b: 2})
 
-    expect(requester.perform.body).to eql("hello")
+    expect(requester.perform.body).to eq("hello")
   end
 
   it "sets default headers" do
@@ -110,24 +110,24 @@ describe Aitch::Request do
     requester.options[:default_headers] = {"HEADER" => "VALUE"}
     request = requester.request
 
-    expect(request["HEADER"]).to eql("VALUE")
+    expect(request["HEADER"]).to eq("VALUE")
   end
 
   it "sets custom headers" do
     request = build_request(headers: {"HEADER" => "VALUE"}).request
-    expect(request["HEADER"]).to eql("VALUE")
+    expect(request["HEADER"]).to eq("VALUE")
   end
 
   it "executes headers with callable protocol" do
     request = build_request(headers: {"HEADER" => -> { "VALUE" }}).request
-    expect(request["HEADER"]).to eql("VALUE")
+    expect(request["HEADER"]).to eq("VALUE")
   end
 
   it "sets basic auth credentials" do
     request = build_request(options: {user: "USER", password: "PASS"}).request
     credentials = Base64.decode64(request["Authorization"].gsub(/Basic /, ""))
 
-    expect(credentials).to eql("USER:PASS")
+    expect(credentials).to eq("USER:PASS")
   end
 
   describe "#client" do
@@ -140,12 +140,12 @@ describe Aitch::Request do
       end
 
       it "sets verification mode" do
-        expect(client.verify_mode).to eql(OpenSSL::SSL::VERIFY_PEER)
+        expect(client.verify_mode).to eq(OpenSSL::SSL::VERIFY_PEER)
       end
 
       it "sets timeout" do
         request.options[:timeout] = 20
-        expect(client.read_timeout).to eql(20)
+        expect(client.read_timeout).to eq(20)
       end
     end
   end
@@ -169,7 +169,7 @@ describe Aitch::Request do
     ].each do |method|
       it "instantiates #{method.upcase} method" do
         request = build_request(request_method: method).request
-        expect(request.class.name).to eql("Net::HTTP::#{method.capitalize}")
+        expect(request.class.name).to eq("Net::HTTP::#{method.capitalize}")
       end
     end
   end
@@ -180,23 +180,23 @@ describe Aitch::Request do
     it "follows redirect" do
       Aitch.configuration.redirect_limit = 5
 
-      FakeWeb.register_uri(:get, "http://example.org/", location: "http://example.com/", status: 301)
-      FakeWeb.register_uri(:get, "http://example.com/", location: "http://www.example.com/", status: 301)
-      FakeWeb.register_uri(:get, "http://www.example.com/", body: "Hello")
+      register_uri(:get, "http://example.org/", location: "http://example.com/", status: 301)
+      register_uri(:get, "http://example.com/", location: "http://www.example.com/", status: 301)
+      register_uri(:get, "http://www.example.com/", body: "Hello")
 
       response = Aitch.get("http://example.org/")
 
       expect(response).not_to be_redirect
-      expect(response.body).to eql("Hello")
-      expect(response.redirected_from).to eql(["http://example.org/", "http://example.com/"])
-      expect(response.url).to eql("http://www.example.com/")
+      expect(response.body).to eq("Hello")
+      expect(response.redirected_from).to eq(["http://example.org/", "http://example.com/"])
+      expect(response.url).to eq("http://www.example.com/")
     end
 
     it "raises when doing too many redirects" do
       Aitch.configuration.redirect_limit = 1
 
-      FakeWeb.register_uri(:get, "http://example.org/", location: "http://example.com/", status: 301)
-      FakeWeb.register_uri(:get, "http://example.com/", location: "https://example.com/", status: 301)
+      register_uri(:get, "http://example.org/", location: "http://example.com/", status: 301)
+      register_uri(:get, "http://example.com/", location: "https://example.com/", status: 301)
 
       expect {
         Aitch.get("http://example.org/")
@@ -206,16 +206,16 @@ describe Aitch::Request do
 
   describe "GET requests" do
     it "sets data as query string" do
-      FakeWeb.register_uri(:get, %r[.+], body: "")
+      register_uri(:get, /.+/)
       Aitch.get("http://example.org/", a: 1, b: 2)
 
-      expect(FakeWeb.last_request.path).to eql("/?a=1&b=2")
+      expect(last_request.uri.request_uri).to eq("/?a=1&b=2")
     end
   end
 
   describe "using the DSL" do
     it "performs request" do
-      FakeWeb.register_uri(:post, %r[.+], body: "")
+      register_uri(:post, /.+/)
 
       response = Aitch.post do
         url "http://example.org/some/path"
@@ -224,13 +224,12 @@ describe Aitch::Request do
         options user: "user", password: "pass"
       end
 
-      expect(FakeWeb.last_request.path).to eql("/some/path")
-      expect(FakeWeb.last_request.method).to eql("POST")
-      expect(FakeWeb.last_request.body).to eql("a=1&b=2")
-      expect(FakeWeb.last_request["Rendering"]).to eql("0.1")
-
-      auth = Base64.encode64("user:pass").chomp
-      expect(FakeWeb.last_request["Authorization"]).to eql("Basic #{auth}")
+      expect(last_request.uri.request_uri).to eq("/some/path")
+      expect(last_request.method).to eq(:post)
+      expect(last_request.body).to eq("a=1&b=2")
+      expect(last_request.headers["Rendering"]).to eq("0.1")
+      expect(last_request.uri.user).to eq("user")
+      expect(last_request.uri.password).to eq("pass")
     end
   end
 end

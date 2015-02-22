@@ -5,32 +5,32 @@ describe Aitch::DSL do
 
   it "sets url" do
     dsl.url "URL"
-    expect(dsl.url).to eql("URL")
+    expect(dsl.url).to eq("URL")
   end
 
   it "sets options" do
     dsl.options "OPTIONS"
-    expect(dsl.options).to eql("OPTIONS")
+    expect(dsl.options).to eq("OPTIONS")
   end
 
   it "sets headers" do
     dsl.headers "HEADERS"
-    expect(dsl.headers).to eql("HEADERS")
+    expect(dsl.headers).to eq("HEADERS")
   end
 
   it "sets data" do
     dsl.data "DATA"
-    expect(dsl.data).to eql("DATA")
+    expect(dsl.data).to eq("DATA")
   end
 
   it "sets data through params" do
     dsl.params "PARAMS"
-    expect(dsl.data).to eql("PARAMS")
+    expect(dsl.data).to eq("PARAMS")
   end
 
   it "sets data through body" do
     dsl.body "BODY"
-    expect(dsl.data).to eql("BODY")
+    expect(dsl.data).to eq("BODY")
   end
 
   it "returns hash" do
