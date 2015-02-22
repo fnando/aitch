@@ -14,3 +14,8 @@ gemfile:
 notifications:
   email:
     - fnando.vieira@gmail.com
+
+addons:
+  code_climate:
+    repo_token:
+      secure: "j/AjAG1u7NtdldftKUXnTMKC7CPd2R/O55ejzZnJi5IlHKKKZgJla1Z0YHTsGr75JQS7Q00D0L3TOSY8fLhV6fXO3Gn+9ShKTFRV5+iUtzlV0AWKBw+uENKNJH4jn1FhCoV8Th0I6OKtq98PqZ/hLR2J+/Uv3oCBwyriyJqag2U="

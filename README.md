@@ -1,9 +1,9 @@
 # Aitch
 
 [![Build Status](https://travis-ci.org/fnando/aitch.png)](https://travis-ci.org/fnando/aitch)
-[![CodeClimate](https://codeclimate.com/github/fnando/aitch.png)](https://codeclimate.com/github/fnando/aitch/)
+[![Code Climate](https://codeclimate.com/github/fnando/aitch/badges/gpa.svg)](https://codeclimate.com/github/fnando/aitch)
+[![Test Coverage](https://codeclimate.com/github/fnando/aitch/badges/coverage.svg)](https://codeclimate.com/github/fnando/aitch)
 [![RubyGems](https://badge.fury.io/rb/aitch.png)](https://rubygems.org/gems/aitch)
-[![Coveralls](https://coveralls.io/repos/fnando/aitch/badge.png?branch=master)](https://coveralls.io/r/fnando/aitch)
 
 A simple HTTP client.
 
