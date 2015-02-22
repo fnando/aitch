@@ -1,6 +1,7 @@
 language: ruby
 script: "bundle exec rspec"
 before_install: gem install bundler
+cache: bundler
 
 rvm:
   - "2.2"
