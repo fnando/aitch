@@ -87,8 +87,12 @@ module Aitch
       headers.key?(name.to_s)
     end
 
+    def description
+      @description ||= [code, DESCRIPTION[code]].compact.join(' ')
+    end
+
     def inspect
-      "#<#{self.class} #{code} #{@http_response.msg} (#{content_type})>"
+      "#<#{self.class} #{description} (#{content_type})>"
     end
 
     alias_method :to_s, :inspect

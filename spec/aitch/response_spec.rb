@@ -76,6 +76,43 @@ describe Aitch::Response do
     expect(response).to respond_to(:runtime)
   end
 
+  it "raises when have no method" do
+    register_uri(:get, "http://example.org/")
+    response = Aitch.get("http://example.org/")
+
+    expect {
+      response.runtime
+    }.to raise_error(NoMethodError)
+  end
+
+  it "returns description for 200 OK" do
+    register_uri(:get, "http://example.org/", status: 200)
+    response = Aitch.get("http://example.org/")
+
+    expect(response.description).to eq("200 OK")
+  end
+
+  it "returns description for 101 Switch Protocol" do
+    register_uri(:get, "http://example.org/", status: 101)
+    response = Aitch.get("http://example.org/")
+
+    expect(response.description).to eq("101 Switch Protocol")
+  end
+
+  it "returns description for 444 No Response (nginx)" do
+    register_uri(:get, "http://example.org/", status: 444)
+    response = Aitch.get("http://example.org/")
+
+    expect(response.description).to eq("444")
+  end
+
+  it "overrides inspect" do
+    register_uri(:get, "http://example.org/", status: 101, content_type: "text/html")
+    response = Aitch.get("http://example.org/")
+
+    expect(response.inspect).to eq("#<Aitch::Response 101 Switch Protocol (text/html)>")
+  end
+
   context "status 3xx" do
     before { Aitch.configuration.follow_redirect = false }
 
@@ -150,6 +187,14 @@ describe Aitch::Response do
       response = Aitch.get("http://example.org/")
 
       expect(response.error).to eq(Aitch::InternalServerErrorError)
+    end
+  end
+
+  context "raw body" do
+    it "returns as it is" do
+      register_uri(:get, "http://example.org/", body: "HELLO", content_type: "text/plain")
+      response = Aitch.get("http://example.org/")
+      expect(response.body).to eq("HELLO")
     end
   end
 

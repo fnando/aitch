@@ -38,6 +38,14 @@ describe Aitch::Request do
     }.to raise_error(Aitch::RequestTimeoutError)
   end
 
+  it "raises exception for invalid http method" do
+    request = build_request(request_method: "invalid", url: "http://example.org")
+
+    expect {
+      request.perform
+    }.to raise_error(Aitch::InvalidHTTPMethodError)
+  end
+
   it "sets user agent" do
     requester = build_request
     request = requester.request
