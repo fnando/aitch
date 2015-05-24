@@ -18,18 +18,7 @@ module Aitch
     def perform
       response = Response.new(options, client.request(request))
       response.url = url
-      redirect = Redirect.new(options)
-
-      while redirect.follow?(response)
-        redirected_from ||= [url]
-        redirected_from << Location.new(redirected_from, response.location).location
-        redirect.followed!
-        response = Aitch.get(redirected_from.last)
-      end
-
-      raise TooManyRedirectsError if redirect.enabled? && response.redirect?
-
-      response.redirected_from = redirected_from
+      response = follow_redirect(response)
       response
     rescue timeout_exception
       raise RequestTimeoutError
@@ -122,6 +111,22 @@ module Aitch
 
     def timeout_exception
       defined?(Net::ReadTimeout) ? Net::ReadTimeout : Timeout::Error
+    end
+
+    def follow_redirect(response)
+      redirect = Redirect.new(options)
+
+      while redirect.follow?(response)
+        redirected_from ||= [url]
+        redirected_from << Location.new(redirected_from, response.location).location
+        redirect.followed!
+        response = Aitch.get(redirected_from.last)
+      end
+
+      raise TooManyRedirectsError if redirect.enabled? && response.redirect?
+
+      response.redirected_from = redirected_from
+      response
     end
   end
 end
