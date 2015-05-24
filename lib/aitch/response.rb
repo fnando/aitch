@@ -5,6 +5,10 @@ module Aitch
     def_delegators :@http_response, :content_type
     attr_accessor :redirected_from, :url
 
+    def self.description_for_code(code)
+      [code, DESCRIPTION[code]].compact.join(' ')
+    end
+
     def initialize(options, http_response)
       @options = options
       @http_response = http_response
@@ -88,7 +92,7 @@ module Aitch
     end
 
     def description
-      @description ||= [code, DESCRIPTION[code]].compact.join(' ')
+      @description ||= self.class.description_for_code(code)
     end
 
     def inspect

@@ -3,6 +3,7 @@ module Aitch
   InvalidHTTPMethodError = Class.new(StandardError)
   RequestTimeoutError    = Class.new(StandardError)
   TooManyRedirectsError  = Class.new(StandardError)
+  StatusCodeError        = Class.new(StandardError)
 
   ResponseError                      = Class.new(StandardError)
   BadRequestError                    = Class.new(ResponseError)

@@ -240,4 +240,22 @@ describe Aitch::Request do
       expect(last_request.uri.password).to eq("pass")
     end
   end
+
+  describe "status code validation" do
+    it "raises exception when status code isn't valid" do
+      register_uri(:get, "http://example.org/", status: 404)
+
+      expect {
+        Aitch.get("http://example.org/", {}, {}, expect: [200])
+      }.to raise_error(Aitch::StatusCodeError, "Expected(200 OK) <=> Actual(404 Not Found)")
+    end
+
+    it "accepts valid status code" do
+      register_uri(:get, "http://example.org/", status: 200)
+
+      expect {
+        Aitch.get("http://example.org/", {}, {}, expect: [200])
+      }.not_to raise_error
+    end
+  end
 end

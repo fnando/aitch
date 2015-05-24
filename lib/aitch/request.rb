@@ -19,6 +19,7 @@ module Aitch
       response = Response.new(options, client.request(request))
       response.url = url
       response = follow_redirect(response)
+      validate_response! response
       response
     rescue timeout_exception
       raise RequestTimeoutError
@@ -127,6 +128,20 @@ module Aitch
 
       response.redirected_from = redirected_from
       response
+    end
+
+    def validate_response!(response)
+      return unless options[:expect]
+
+      expected = [options[:expect]].flatten
+      return if expected.include?(response.code)
+
+      descriptions = expected
+                      .map {|code| Response.description_for_code(code) }
+                      .join(', ')
+
+      raise StatusCodeError,
+        "Expected(#{descriptions}) <=> Actual(#{response.description})"
     end
   end
 end
