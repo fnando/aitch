@@ -169,7 +169,7 @@ Setting basic auth credentials:
 ```ruby
 response = Aitch.get do
   url "http://restrict.example.org/"
-  options: {user: "john", password: "test"}
+  options user: "john", password: "test"
 end
 ```
 
@@ -205,6 +205,25 @@ end
 
 Request.get("http://example.org")
 ```
+
+### Validating responses
+
+When you know of kind of response you're expecting, you can validate the response with a list of accepted response statuses.
+
+```ruby
+Aitch.get do
+  url "http://example.org"
+  options expect: 200
+end
+```
+
+If this request receives anything other than `200`, it will raise a `Aitch::StatusCodeError` exception.
+
+```
+Expect(200 OK) <=> Actual(404 Not Found)
+```
+
+You can also provide a list of accepted statuses, like `expect: [200, 201]`.
 
 ## Contributing
 
