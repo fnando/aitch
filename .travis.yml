@@ -2,6 +2,7 @@ language: ruby
 script: "bundle exec rspec"
 before_install: gem install bundler
 cache: bundler
+sudo: false
 
 rvm:
   - "2.2"
@@ -9,6 +10,7 @@ rvm:
   - "2.0"
   - "1.9"
   - jruby-19mode
+  - jruby-head
 
 gemfile:
   - Gemfile
