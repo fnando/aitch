@@ -5,19 +5,18 @@ cache: bundler
 sudo: false
 
 rvm:
+  - "2.3.0"
   - "2.2"
   - "2.1"
   - "2.0"
   - "1.9"
-  - jruby-19mode
   - jruby-head
 
 gemfile:
   - Gemfile
 
 notifications:
-  email:
-    - fnando.vieira@gmail.com
+  email: false
 
 addons:
   code_climate:
