@@ -26,11 +26,11 @@ module Aitch
     end
 
     def content_type=(content_type)
-      headers['Content-Type'] = content_type
+      headers["Content-Type"] = content_type
     end
 
     def content_type
-      headers['Content-Type'] || options.fetch(:default_headers, {})['Content-Type']
+      headers["Content-Type"] || options.fetch(:default_headers, {})["Content-Type"]
     end
 
     def request
@@ -138,7 +138,7 @@ module Aitch
 
       descriptions = expected
                       .map {|code| Response.description_for_code(code) }
-                      .join(', ')
+                      .join(", ")
 
       raise StatusCodeError,
         "Expected(#{descriptions}) <=> Actual(#{response.description})"

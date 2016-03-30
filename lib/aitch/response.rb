@@ -6,7 +6,7 @@ module Aitch
     attr_accessor :redirected_from, :url
 
     def self.description_for_code(code)
-      [code, DESCRIPTION[code]].compact.join(' ')
+      [code, DESCRIPTION[code]].compact.join(" ")
     end
 
     def initialize(options, http_response)
