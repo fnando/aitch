@@ -62,19 +62,8 @@ module Aitch
     end
 
     def data
-      if json?
-        @options[:json_parser].load(body)
-      elsif xml?
-        @options[:xml_parser].load(body)
-      elsif html?
-        @options[:html_parser].load(body)
-      else
-        body
-      end
+      Aitch::ResponseParser.find(content_type).load(body)
     end
-    alias_method :xml, :data
-    alias_method :html, :data
-    alias_method :json, :data
 
     def headers
       @headers ||= {}.tap do |headers|

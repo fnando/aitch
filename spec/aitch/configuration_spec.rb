@@ -19,10 +19,6 @@ describe Aitch::Configuration do
     expect(Aitch::Configuration.new.default_headers).to eq({})
   end
 
-  it "sets default XML parser" do
-    expect(Aitch::Configuration.new.xml_parser).to eq(Aitch::XMLParser)
-  end
-
   it "configures aitch" do
     Aitch.configure do |config|
       config.timeout = 15

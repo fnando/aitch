@@ -25,8 +25,11 @@ require "aitch/response/errors"
 require "aitch/response"
 require "aitch/response/body"
 require "aitch/response/description"
-require "aitch/xml_parser"
-require "aitch/html_parser"
+require "aitch/response_parser/default_parser"
+require "aitch/response_parser/html_parser"
+require "aitch/response_parser/json_parser"
+require "aitch/response_parser/xml_parser"
+require "aitch/response_parser"
 require "aitch/version"
 
 module Aitch
@@ -48,6 +51,7 @@ module Aitch
   end
 
   private
+
   def self.namespace
     @namespace ||= Namespace.new
   end

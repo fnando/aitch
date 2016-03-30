@@ -54,15 +54,6 @@ Aitch.configure do |config|
 
   # Set the logger.
   config.logger = nil
-
-  # Set the JSON parser.
-  config.json_parser = JSON
-
-  # Set the XML parser.
-  config.xml_parser = Aitch::XMLParser
-
-  # Set the HTML parser.
-  config.html_parser = Aitch::HTMLParser
 end
 ```
 
@@ -108,10 +99,7 @@ response.redirect?        # status 3xx
 response.error?           # status 4xx or 5xx
 response.error            # response error
 response.body             # returned body
-response.data             # HTML, JSON or XML payload
-response.xml              # An alias to the Aitch::Response#data method
-response.html             # An alias to the Aitch::Response#data method
-response.json             # An alias to the Aitch::Response#data method
+response.data             # Parsed response body
 ```
 
 #### Parsing JSON, XML and HTML with Nokogiri
@@ -224,6 +212,54 @@ Expect(200 OK) <=> Actual(404 Not Found)
 ```
 
 You can also provide a list of accepted statuses, like `expect: [200, 201]`.
+
+### Response Parsers
+
+You can register new response parsers by using `Aitch::ResponseParser.register(name, parser)`, where parser must implement the methods `match?(content_type)` and `load(response_body)`. This is how you could load CSV values.
+
+```ruby
+require "csv"
+
+module CSVParser
+  def self.type
+    :csv
+  end
+
+  def self.match?(content_type)
+    content_type.to_s =~ /csv/
+  end
+
+  def self.load(source)
+    CSV.parse(source.to_s)
+  end
+end
+
+Aitch::ResponseParser.prepend(:csv, CSVParser)
+```
+
+The default behavior is returning the response body. You can replace it as the following:
+
+```ruby
+module DefaultParser
+  def self.type
+    :default
+  end
+
+  def self.match?(content_type)
+    true
+  end
+
+  def self.load(source)
+    source.to_s
+  end
+end
+
+# You should use append here, to ensure
+# that is that last parser on the list.
+Aitch::ResponseParser.append(:default, DefaultParser)
+```
+
+Aitch comes with response parsers for HTML, XML and JSON.
 
 ## Contributing
 

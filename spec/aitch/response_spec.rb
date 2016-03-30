@@ -219,7 +219,7 @@ describe Aitch::Response do
       register_uri(:get, "http://example.org/", body: "[1,2,3]", content_type: "application/json")
       response = Aitch.get("http://example.org/")
 
-      expect(response.json).to eq([1,2,3])
+      expect(response.data).to eq([1,2,3])
     end
   end
 
@@ -235,7 +235,7 @@ describe Aitch::Response do
       register_uri(:get, "http://example.org/", body: "Hello", content_type: "text/html")
       response = Aitch.get("http://example.org/")
 
-      expect(response.html).to be_a(Nokogiri::HTML::Document)
+      expect(response.data).to be_a(Nokogiri::HTML::Document)
     end
   end
 
@@ -251,7 +251,36 @@ describe Aitch::Response do
       register_uri(:get, "http://example.org/", body: "<foo/>", content_type: "application/xml")
       response = Aitch.get("http://example.org/")
 
-      expect(response.xml).to be_a(Nokogiri::XML::Document)
+      expect(response.data).to be_a(Nokogiri::XML::Document)
+    end
+  end
+
+  context "custom response parser" do
+    before do
+      require "csv"
+
+      parser = Class.new do
+        def self.type
+          :csv
+        end
+
+        def self.match?(content_type)
+          content_type =~ /csv/
+        end
+
+        def self.load(source)
+          CSV.parse(source)
+        end
+      end
+
+      Aitch::ResponseParser.prepend(:csv, parser)
+    end
+
+    it "returns csv" do
+      register_uri(:get, "http://example.org/file.csv", body: "1,2,3", content_type: "text/csv")
+      response = Aitch.get("http://example.org/file.csv")
+
+      expect(response.data).to be_a(Array)
     end
   end
 

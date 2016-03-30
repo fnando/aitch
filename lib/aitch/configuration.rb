@@ -22,24 +22,12 @@ module Aitch
     # Set the logger.
     attr_accessor :logger
 
-    # Set the JSON parser.
-    attr_accessor :json_parser
-
-    # Set the XML parser.
-    attr_accessor :xml_parser
-
-    # Set the HTML parser.
-    attr_accessor :html_parser
-
     def initialize
       @timeout = 10
       @redirect_limit = 5
       @follow_redirect = true
       @user_agent = "Aitch/#{Aitch::VERSION} (http://rubygems.org/gems/aitch)"
       @default_headers = {}
-      @json_parser = JSON
-      @xml_parser = XMLParser
-      @html_parser = HTMLParser
     end
 
     def to_h
