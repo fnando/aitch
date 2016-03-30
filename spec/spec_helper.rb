@@ -7,7 +7,6 @@ Bundler.require
 
 require "aitch"
 require "base64"
-require "test_notifier/runner/rspec"
 require "webmock/rspec"
 require "nokogiri"
 
