@@ -13,6 +13,8 @@ module Aitch
       self.options = {}
       self.redirects = []
 
+      @_original_options = options.dup.freeze
+
       options.each do |name, value|
         public_send("#{name}=", value)
       end
@@ -117,14 +119,22 @@ module Aitch
       defined?(Net::ReadTimeout) ? Net::ReadTimeout : Timeout::Error
     end
 
-    def follow_redirect(response)
+    def follow_redirect(response, redirected_from = [])
+      return response unless response.redirect?
+
       redirect = Redirect.new(options)
+      redirected_from = [url]
 
       while redirect.follow?(response)
-        redirected_from ||= [url]
-        redirected_from << Location.new(redirected_from, response.location).location
+        location = Location.new(redirected_from, response.location).location
+        redirected_from << location
         redirect.followed!
-        response = Aitch.get(redirected_from.last)
+        follow_request_method = response.code == 307 ? request_method : :get
+        follow_request_options = @_original_options.merge(
+          request_method: follow_request_method,
+          url: location
+        )
+        response = self.class.new(follow_request_options).perform
       end
 
       raise TooManyRedirectsError if redirect.enabled? && response.redirect?

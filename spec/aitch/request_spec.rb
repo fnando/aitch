@@ -211,6 +211,26 @@ describe Aitch::Request do
         Aitch.get("http://example.org/")
       }.to raise_error(Aitch::TooManyRedirectsError)
     end
+
+    it "honors 307 status" do
+      Aitch.configuration.follow_redirect = true
+      Aitch.configuration.redirect_limit = 5
+
+      register_uri(:post, "http://example.org/", status: 307, location: "/hi")
+      register_uri(:post, "http://example.org/hi", status: 307, location: "/hello")
+      register_uri(:post, "http://example.org/hello", status: 200)
+
+      response = Aitch.post("http://example.org/", {a: 1}, {Range: "1..100"})
+
+      expect(response.url).to eq("http://example.org/hello")
+      expect(response.code).to eq(200)
+      expect(response.redirected_from).to eq(["http://example.org/", "http://example.org/hi"])
+
+      request = WebMock.requests.last
+
+      expect(request.body).to eq("a=1")
+      expect(request.headers["Range"]).to eq("1..100")
+    end
   end
 
   describe "GET requests" do
