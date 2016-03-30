@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.configure do |config|
   config.include Module.new {
     def add_hash_entry(source, target, from, to)

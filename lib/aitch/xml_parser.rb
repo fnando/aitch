@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Aitch
   module XMLParser
     def self.load(source)

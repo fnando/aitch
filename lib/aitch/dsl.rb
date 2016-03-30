@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Aitch
   class DSL
     %w[url options headers data].each do |name|

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Aitch
   class Namespace
     def configure(&block)

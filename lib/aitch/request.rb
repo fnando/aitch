@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Aitch
   class Request
     attr_accessor :request_method

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Aitch
   class Location
     attr_reader :redirect_stack, :current_url
@@ -11,10 +12,10 @@ module Aitch
       return current_url unless current_url.match(%r[\A/])
 
       uri = find_uri_with_host
-      url = "#{uri.scheme}://#{uri.hostname}"
+      url = ["#{uri.scheme}://#{uri.hostname}"]
       url << ":#{uri.port}" unless [80, 443].include?(uri.port)
       url << current_url
-      url
+      url.join
     end
 
     def find_uri_with_host

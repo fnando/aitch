@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Aitch
   module Utils extend self
     def underscore(string)

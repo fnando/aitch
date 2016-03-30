@@ -1,5 +1,7 @@
 # Changelog
 
+* **unreleased**
+    * Use frozen string magic comments
 * **0.5.0** - May 24, 2015
     * Remove hard dependency on ActiveSupport
     * Add response validation
