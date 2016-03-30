@@ -6,10 +6,12 @@ module Aitch
     attr_accessor :data
     attr_accessor :headers
     attr_accessor :options
+    attr_accessor :redirects
 
     def initialize(options)
-      self.headers ||= {}
-      self.options ||= {}
+      self.headers = {}
+      self.options = {}
+      self.redirects = []
 
       options.each do |name, value|
         public_send("#{name}=", value)

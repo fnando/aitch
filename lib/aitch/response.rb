@@ -13,6 +13,7 @@ module Aitch
     def initialize(options, http_response)
       @options = options
       @http_response = http_response
+      @redirected_from = options.fetch(:redirected_from, [])
     end
 
     ERRORS.each do |status_code, exception|

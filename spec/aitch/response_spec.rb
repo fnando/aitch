@@ -117,6 +117,14 @@ describe Aitch::Response do
   context "status 3xx" do
     before { Aitch.configuration.follow_redirect = false }
 
+    it "sets default redirected from" do
+      expect(Aitch::Response.new({}, double("response")).redirected_from).to eq([])
+    end
+
+    it "uses provided redirected from" do
+      expect(Aitch::Response.new({redirected_from: ["URL"]}, double("response")).redirected_from).to eq(["URL"])
+    end
+
     it "has body" do
       register_uri(:get, "http://example.org/", body: "Hello", status: 301)
       response = Aitch.get("http://example.org/")
@@ -251,7 +259,7 @@ describe Aitch::Response do
     name = Aitch::Utils.underscore(exception.name.split("::").last).gsub("_error", "")
 
     it "detects response as #{name}" do
-      config = double
+      config = {}
       http_response = double(code: code)
       response = Aitch::Response.new(config, http_response)
       expect(response.public_send("#{name}?")).to be_truthy
