@@ -3,6 +3,7 @@
 * **unreleased**
     * Use frozen string magic comments
     * 307 redirections will honor the HTTP request method
+    * Fix issue with redirection; it was including the target url for one level redirection.
 * **0.5.0** - May 24, 2015
     * Remove hard dependency on ActiveSupport
     * Add response validation

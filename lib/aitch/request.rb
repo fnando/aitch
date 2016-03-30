@@ -127,7 +127,6 @@ module Aitch
 
       while redirect.follow?(response)
         location = Location.new(redirected_from, response.location).location
-        redirected_from << location
         redirect.followed!
         follow_request_method = response.code == 307 ? request_method : :get
         follow_request_options = @_original_options.merge(
@@ -135,6 +134,7 @@ module Aitch
           url: location
         )
         response = self.class.new(follow_request_options).perform
+        redirected_from += response.redirected_from
       end
 
       raise TooManyRedirectsError if redirect.enabled? && response.redirect?

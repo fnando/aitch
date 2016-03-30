@@ -212,6 +212,18 @@ describe Aitch::Request do
       }.to raise_error(Aitch::TooManyRedirectsError)
     end
 
+    it "returns only redirection urls" do
+      Aitch.configuration.redirect_limit = 5
+
+      register_uri(:get, "http://example.org/", location: "http://example.com/", status: 301)
+      register_uri(:get, "http://example.com/", status: 200)
+
+      response = Aitch.get("http://example.org/")
+
+      expect(response.url).to eq("http://example.com/")
+      expect(response.redirected_from).to eq(["http://example.org/"])
+    end
+
     it "honors 307 status" do
       Aitch.configuration.follow_redirect = true
       Aitch.configuration.redirect_limit = 5
