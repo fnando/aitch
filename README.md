@@ -208,7 +208,7 @@ Request.get("http://example.org")
 
 ### Validating responses
 
-When you know of kind of response you're expecting, you can validate the response with a list of accepted response statuses.
+When you know the kind of response you're expecting, you can validate it by specifying the `expect` option.
 
 ```ruby
 Aitch.get do
