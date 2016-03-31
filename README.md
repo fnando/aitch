@@ -109,25 +109,25 @@ If your response is a JSON, XML or a HTML content type, we'll automatically conv
 ```ruby
 response = Aitch.get("http://simplesideias.com.br")
 
-response.html.class
+response.data.class
 #=> Nokogiri::HTML::Document
 
-response.html.css("h1").size
+response.data.css("h1").size
 #=> 69
 
 response = Aitch.get("http://simplesideias.com.br/feed")
 
-response.xml.class
+response.data.class
 #=> Nokogiri::XML::Document
 
-response.xml.css("item").size
+response.data.css("item").size
 #=> 10
 
 response = Aitch.get("https://api.github.com/users/fnando")
-response.json.class
+response.data.class
 #=> Hash
 
-response.json["login"]
+response.data["login"]
 #=> fnando
 ```
 
