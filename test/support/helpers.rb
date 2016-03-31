@@ -1,6 +1,5 @@
-# frozen_string_literal: true
-RSpec.configure do |config|
-  config.include Module.new {
+module Minitest
+  class Test
     def add_hash_entry(source, target, from, to)
       target[to] = source[from] if source[from]
     end
@@ -21,5 +20,13 @@ RSpec.configure do |config|
     def last_request
       WebMock.requests.last
     end
-  }
+
+    def build_request(options = {})
+      Aitch::Request.new({
+        request_method: "get",
+        url: "http://example.org",
+        options: {}
+      }.merge(options))
+    end
+  end
 end
