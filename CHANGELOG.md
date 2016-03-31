@@ -1,6 +1,6 @@
 # Changelog
 
-* **unreleased**
+* **1.0.0**
     * Use frozen string magic comments
     * 307 redirections will honor the HTTP request method
     * Fix issue with redirection; it was including the target url for one level redirection.
