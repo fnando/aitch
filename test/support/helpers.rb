@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Minitest
   class Test
     def add_hash_entry(source, target, from, to)
