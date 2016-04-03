@@ -2,6 +2,12 @@
 module Aitch
   module ResponseParser
     module JSONParser
+      class << self
+        attr_accessor :engine
+      end
+
+      self.engine = ::JSON
+
       def self.type
         :json
       end
@@ -11,7 +17,7 @@ module Aitch
       end
 
       def self.load(source)
-        ::JSON.load(source.to_s)
+        engine.load(source.to_s)
       end
     end
   end

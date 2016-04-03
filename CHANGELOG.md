@@ -1,5 +1,7 @@
 # Changelog
 
+* **1.0.1**
+    * Fix a bug when JSON encoding body in a POST request.
 * **1.0.0**
     * Use frozen string magic comments
     * 307 redirections will honor the HTTP request method

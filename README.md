@@ -261,6 +261,13 @@ Aitch::ResponseParser.append(:default, DefaultParser)
 
 Aitch comes with response parsers for HTML, XML and JSON.
 
+By default, the JSON parser will be `JSON`. To set it to something else, use `Aitch::ResponseParser::JSONParser.engine`.
+
+```ruby
+require "oj"
+Aitch::ResponseParser::JSONParser.engine = Oj
+```
+
 ## Contributing
 
 1. Fork it
