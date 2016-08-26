@@ -6,7 +6,7 @@ module Aitch
         attr_accessor :engine
       end
 
-      self.engine = ::JSON
+      self.engine = Engines::JSON
 
       def self.type
         :json

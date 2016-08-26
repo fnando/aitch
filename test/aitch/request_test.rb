@@ -132,7 +132,6 @@ class RequestTest < Minitest::Test
     assert_equal :post, last_request.method
     assert_equal "a=1&b=2", last_request.body
     assert_equal "0.1", last_request.headers["Rendering"]
-    assert_equal "user", last_request.uri.user
-    assert_equal "pass", last_request.uri.password
+    assert_equal "user:pass", Base64.decode64(last_request.headers["Authorization"].split(" ").last)
   end
 end
