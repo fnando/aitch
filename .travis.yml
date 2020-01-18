@@ -1,27 +1,21 @@
 ---
 language: ruby
-script: "bundle exec rake"
+script: bundle exec rake
 before_install: gem install bundler
 cache: bundler
 sudo: false
-
 rvm:
-  - "2.7"
-
+  - '2.7'
 gemfile:
   - Gemfile
-
 notifications:
   email: false
-
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - "./cc-test-reporter before-build"
 after_script:
   - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
-
-addons:
-  code_climate:
-    repo_token:
-      secure: "j/AjAG1u7NtdldftKUXnTMKC7CPd2R/O55ejzZnJi5IlHKKKZgJla1Z0YHTsGr75JQS7Q00D0L3TOSY8fLhV6fXO3Gn+9ShKTFRV5+iUtzlV0AWKBw+uENKNJH4jn1FhCoV8Th0I6OKtq98PqZ/hLR2J+/Uv3oCBwyriyJqag2U="
+env:
+  global:
+    secure: kYLDjKzCAz7/IGcDTSiMcRxfDPbz2hWsSa5AlriOAbm51RYZpeB/h2HY5BqfuewgRIOxjDnxFnOiv148vsspl5ew6VB8CZjn2zTOthpJ0SC6+GWMbjbcjWyKuwIbpQiwhQxCz8l0SGZWWt53vm1ifgPoYaBvr26xcGWFFGfy890=
