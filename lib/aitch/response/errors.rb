@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Aitch
   class Response
     ERRORS = {
@@ -35,6 +36,6 @@ module Aitch
       505 => VersionNotSupportedError,
       507 => InsufficientStorageError,
       511 => NetworkAuthenticationRequiredError
-    }
+    }.freeze
   end
 end

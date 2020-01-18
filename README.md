@@ -83,6 +83,17 @@ response = Aitch.get do
 end
 ```
 
+Finally, you can use keyword arguments:
+
+```ruby
+Aitch.get(
+  url: "http://example.org",
+  params: {a: 1, b: 2},
+  headers: {Authorization: "Token token=abc"},
+  options: {follow_redirect: false}
+)
+```
+
 ### Response
 
 The response object:

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Aitch
   class URI
     extend Forwardable
@@ -12,8 +13,8 @@ module Aitch
 
       begin
         @uri = ::URI.parse(url)
-      rescue ::URI::InvalidURIError => error
-        raise InvalidURIError, error
+      rescue ::URI::InvalidURIError => e
+        raise InvalidURIError, e
       end
     end
 
@@ -35,7 +36,9 @@ module Aitch
 
     def query
       query = [@uri.query]
-      query << ::URI.encode_www_form(@data.to_a) if !request_has_body? && @data.respond_to?(:to_a)
+      if !request_has_body? && @data.respond_to?(:to_a)
+        query << ::URI.encode_www_form(@data.to_a)
+      end
       query = query.compact.reject(&:empty?).join("&")
 
       "?#{query}" unless query == ""

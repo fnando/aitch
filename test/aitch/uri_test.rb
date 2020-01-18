@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "test_helper"
 
 class UriTest < Minitest::Test
@@ -27,7 +28,7 @@ class UriTest < Minitest::Test
   end
 
   test "ignores data when request has body" do
-    assert_equal nil, Aitch::URI.new("http://example.org/", {c: 3}, true).query
+    assert_nil Aitch::URI.new("http://example.org/", {c: 3}, true).query
   end
 
   test "returns request uri" do

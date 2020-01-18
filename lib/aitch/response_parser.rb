@@ -1,24 +1,27 @@
 # frozen_string_literal: true
+
 module Aitch
   module ResponseParser
-    PARSERS = []
+    def self.parsers
+      @parsers ||= []
+    end
 
     def self.prepend(name, parser)
       unregister(name)
-      PARSERS.unshift parser
+      parsers.unshift parser
     end
 
     def self.append(name, parser)
       unregister(name)
-      PARSERS << parser
+      parsers << parser
     end
 
     def self.unregister(name)
-      PARSERS.delete_if {|parser| parser.type == name }
+      parsers.delete_if {|parser| parser.type == name }
     end
 
     def self.find(content_type)
-      PARSERS.find {|parser| parser.match?(content_type) }
+      parsers.find {|parser| parser.match?(content_type) }
     end
 
     append :json, JSONParser

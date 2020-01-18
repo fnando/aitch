@@ -1,16 +1,30 @@
 # frozen_string_literal: true
+
 module Aitch
   class Namespace
-    def configure(&block)
+    def configure
       yield config
     end
 
     def config
       @config ||= Configuration.new
     end
-    alias_method :configuration, :config
+    alias configuration config
 
-    def execute(request_method = nil, url = nil, data = {}, headers = {}, options = {}, &block)
+    def execute(
+      request_method: nil,
+      url: nil,
+      params: nil,
+      data: nil,
+      body: nil,
+      headers: nil,
+      options: nil,
+      &block
+    )
+      data = data || params || body || {}
+      headers ||= {}
+      options ||= {}
+
       if block_given?
         dsl = DSL.new
         dsl.instance_eval(&block)
@@ -33,8 +47,11 @@ module Aitch
     end
 
     def execute!(*args, &block)
-      response = execute(*args, &block)
+      options = extract_args!(args)
+      response = execute(**options, &block)
+
       raise response.error if response.error?
+
       response
     end
 
@@ -47,14 +64,23 @@ module Aitch
       options
       trace
       head
-    ].each do |method_name|
-      define_method(method_name) do |url = nil, data = {}, headers = {}, options = {}, &block|
-        execute(method_name, url, data, headers, options, &block)
+    ].each do |request_method|
+      define_method(request_method) do |*args, &block|
+        options = extract_args!(args)
+        execute(**options.merge(request_method: request_method), &block)
       end
 
-      define_method("#{method_name}!") do |url = nil, data = {}, headers = {}, options = {}, &block|
-        execute!(method_name, url, data, headers, options, &block)
+      define_method("#{request_method}!") do |*args, &block|
+        options = extract_args!(args)
+
+        execute!(**options.merge(request_method: request_method), &block)
       end
+    end
+
+    private def extract_args!(args)
+      return args.first if args.size == 1 && args.first.is_a?(Hash)
+
+      %i[url data headers options].zip(args).to_h
     end
   end
 end

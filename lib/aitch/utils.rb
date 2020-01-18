@@ -1,6 +1,8 @@
 # frozen_string_literal: true
+
 module Aitch
-  module Utils extend self
+  module Utils
+    extend self
     def underscore(string)
       string = string.gsub(/(?<=.)(URI|[A-Z])/) do |char|
         "_#{char}"

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Aitch
   class Request
     attr_accessor :request_method
@@ -7,6 +8,9 @@ module Aitch
     attr_accessor :headers
     attr_accessor :options
     attr_accessor :redirects
+
+    alias params= data=
+    alias body= data=
 
     def initialize(options)
       self.headers = {}
@@ -35,7 +39,8 @@ module Aitch
     end
 
     def content_type
-      headers["Content-Type"] || options.fetch(:default_headers, {})["Content-Type"]
+      headers["Content-Type"] ||
+        options.fetch(:default_headers, {})["Content-Type"]
     end
 
     def request
@@ -63,23 +68,26 @@ module Aitch
     def http_method_class
       Net::HTTP.const_get(request_method.to_s.capitalize)
     rescue NameError
-      raise InvalidHTTPMethodError, "unexpected HTTP verb: #{request_method.inspect}"
+      raise InvalidHTTPMethodError,
+            "unexpected HTTP verb: #{request_method.inspect}"
     end
 
-    private
-    def set_body(request)
+    private def set_body(request)
       body_data = data
       body_data = data.to_h if data.respond_to?(:to_h)
-      body_data = ResponseParser::JSONParser.engine.dump(body_data) if content_type.to_s =~ /\bjson\b/
 
-      if body_data.kind_of?(Hash)
-        request.body = Utils.build_query(body_data)
-      else
-        request.body = body_data.to_s
+      if content_type.to_s =~ /\bjson\b/
+        body_data = ResponseParser::JSONParser.engine.dump(body_data)
       end
+
+      request.body = if body_data.is_a?(Hash)
+                       Utils.build_query(body_data)
+                     else
+                       body_data.to_s
+                     end
     end
 
-    def set_headers(request)
+    private def set_headers(request)
       all_headers = options.fetch(:default_headers, {}).merge(headers)
 
       all_headers.each do |name, value|
@@ -88,30 +96,31 @@ module Aitch
       end
     end
 
-    def set_credentials(request)
+    private def set_credentials(request)
       return unless options[:user] || options[:password]
+
       request.basic_auth(options[:user], options[:password])
     end
 
-    def set_https(client)
+    private def set_https(client)
       client.use_ssl = uri.scheme == "https"
       client.verify_mode = OpenSSL::SSL::VERIFY_PEER
     end
 
-    def set_timeout(client)
+    private def set_timeout(client)
       client.read_timeout = options[:timeout]
     end
 
-    def set_logger(client)
+    private def set_logger(client)
       logger = options[:logger]
       client.set_debug_output(logger) if logger
     end
 
-    def set_user_agent(request)
+    private def set_user_agent(request)
       request["User-Agent"] = options[:user_agent]
     end
 
-    def set_gzip(request)
+    private def set_gzip(request)
       request["Accept-Encoding"] = "gzip,deflate"
     end
 
@@ -119,7 +128,7 @@ module Aitch
       defined?(Net::ReadTimeout) ? Net::ReadTimeout : Timeout::Error
     end
 
-    def follow_redirect(response, redirected_from = [])
+    private def follow_redirect(response)
       return response unless response.redirect?
 
       redirect = Redirect.new(options)
@@ -143,18 +152,18 @@ module Aitch
       response
     end
 
-    def validate_response!(response)
+    private def validate_response!(response)
       return unless options[:expect]
 
       expected = [options[:expect]].flatten
       return if expected.include?(response.code)
 
       descriptions = expected
-                      .map {|code| Response.description_for_code(code) }
-                      .join(", ")
+                     .map {|code| Response.description_for_code(code) }
+                     .join(", ")
 
       raise StatusCodeError,
-        "Expected(#{descriptions}) <=> Actual(#{response.description})"
+            "Expected(#{descriptions}) <=> Actual(#{response.description})"
     end
   end
 end

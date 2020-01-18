@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "net/https"
 require "forwardable"
 require "json"
@@ -38,20 +39,18 @@ module Aitch
     extend Forwardable
 
     def_delegators :namespace,
-      :configuration, :config,
-      :get, :get!,
-      :post, :post!,
-      :put, :put!,
-      :patch, :patch!,
-      :options, :options!,
-      :trace, :trace!,
-      :head, :head!,
-      :delete, :delete!,
-      :execute, :execute!,
-      :configure
+                   :configuration, :config,
+                   :get, :get!,
+                   :post, :post!,
+                   :put, :put!,
+                   :patch, :patch!,
+                   :options, :options!,
+                   :trace, :trace!,
+                   :head, :head!,
+                   :delete, :delete!,
+                   :execute, :execute!,
+                   :configure
   end
-
-  private
 
   def self.namespace
     @namespace ||= Namespace.new

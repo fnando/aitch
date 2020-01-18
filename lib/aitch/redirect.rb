@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Aitch
   class Redirect
     attr_reader :tries

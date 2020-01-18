@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "cgi"
 
 class Object
@@ -39,20 +40,21 @@ class Array
   # Calls <tt>to_param</tt> on all its elements and joins the result with
   # slashes. This is used by <tt>url_for</tt> in Action Pack.
   def to_param
-    collect { |e| e.to_param }.join '/'
+    collect(&:to_param).join "/"
   end
 
   # Converts an array into a string suitable for use as a URL query string,
   # using the given +key+ as the param name.
   #
-  #   ['Rails', 'coding'].to_query('hobbies') # => "hobbies%5B%5D=Rails&hobbies%5B%5D=coding"
+  #   ["Rails", "coding"].to_query("hobbies")
+  #   # => "hobbies%5B%5D=Rails&hobbies%5B%5D=coding"
   def to_query(key)
     prefix = "#{key}[]"
 
     if empty?
       nil.to_query(prefix)
     else
-      collect { |value| value.to_query(prefix) }.join '&'
+      collect {|value| value.to_query(prefix) }.join "&"
     end
   end
 end
@@ -78,8 +80,8 @@ class Hash
       unless (value.is_a?(Hash) || value.is_a?(Array)) && value.empty?
         value.to_query(namespace ? "#{namespace}[#{key}]" : key)
       end
-    end.compact.sort! * '&'
+    end.compact.sort! * "&"
   end
 
-  alias_method :to_param, :to_query
+  alias to_param to_query
 end

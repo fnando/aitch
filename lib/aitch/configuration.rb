@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Aitch
   class Configuration
     # Set proxy.

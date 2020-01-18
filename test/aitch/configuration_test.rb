@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "test_helper"
 
 class ConfigurationTest < Minitest::Test
@@ -16,7 +17,7 @@ class ConfigurationTest < Minitest::Test
   end
 
   test "sets default headers" do
-    assert_equal Hash.new, Aitch::Configuration.new.default_headers
+    assert_equal({}, Aitch::Configuration.new.default_headers)
   end
 
   test "configures aitch" do

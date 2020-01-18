@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Aitch
   class Response
     extend Forwardable
@@ -17,7 +18,9 @@ module Aitch
     end
 
     ERRORS.each do |status_code, exception|
-      method_name = Utils.underscore(exception.name.split("::").last).gsub("_error", "")
+      method_name = Utils
+                    .underscore(exception.name.split("::").last)
+                    .gsub("_error", "")
 
       define_method "#{method_name}?" do
         code == status_code
@@ -35,7 +38,7 @@ module Aitch
     def success?
       code >= 200 && code <= 399
     end
-    alias_method :ok?, :success?
+    alias ok? success?
 
     def redirect?
       code >= 300 && code <= 399
@@ -75,10 +78,11 @@ module Aitch
 
     def method_missing(name, *args, &block)
       return headers[name.to_s] if headers.key?(name.to_s)
+
       super
     end
 
-    def respond_to_missing?(name, include_private = false)
+    def respond_to_missing?(name, _include_private = false)
       headers.key?(name.to_s)
     end
 
@@ -90,6 +94,6 @@ module Aitch
       "#<#{self.class} #{description} (#{content_type})>"
     end
 
-    alias_method :to_s, :inspect
+    alias to_s inspect
   end
 end

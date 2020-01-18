@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "test_helper"
 
 class ResponseTest < Minitest::Test
@@ -27,7 +28,6 @@ class ResponseTest < Minitest::Test
   end
 
   test "deflates response" do
-    stdio = StringIO.new
     deflated = Zlib::Deflate.deflate("Hello")
 
     register_uri(:get, "http://example.org/", body: deflated, content_encoding: "deflate")

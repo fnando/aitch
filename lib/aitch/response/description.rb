@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Aitch
   class Response
     DESCRIPTION = {
@@ -56,7 +57,7 @@ module Aitch
       504 => "Gateway Time Out",
       505 => "Version Not Supported",
       507 => "Insufficient Storage",
-      511 => "Network Authentication Required",
-    }
+      511 => "Network Authentication Required"
+    }.freeze
   end
 end

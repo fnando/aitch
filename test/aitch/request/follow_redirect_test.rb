@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "test_helper"
 
 class FollowRedirectTest < Minitest::Test
@@ -25,9 +26,9 @@ class FollowRedirectTest < Minitest::Test
     register_uri(:get, "http://example.org/", location: "http://example.com/", status: 301)
     register_uri(:get, "http://example.com/", location: "https://example.com/", status: 301)
 
-    assert_raises(Aitch::TooManyRedirectsError) {
+    assert_raises(Aitch::TooManyRedirectsError) do
       Aitch.get("http://example.org/")
-    }
+    end
   end
 
   test "returns only redirection urls" do
@@ -50,7 +51,7 @@ class FollowRedirectTest < Minitest::Test
     register_uri(:post, "http://example.org/hi", status: 307, location: "/hello")
     register_uri(:post, "http://example.org/hello", status: 200)
 
-    response = Aitch.post("http://example.org/", {a: 1}, {Range: "1..100"})
+    response = Aitch.post("http://example.org/", {a: 1}, Range: "1..100")
 
     assert_equal "http://example.org/hello", response.url
     assert_equal 200, response.code

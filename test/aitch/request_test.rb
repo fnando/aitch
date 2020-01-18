@@ -1,10 +1,11 @@
 # frozen_string_literal: true
+
 require "test_helper"
 
 class RequestTest < Minitest::Test
   test "sets content type" do
-    request = build_request(content_type: 'application/json')
-    assert_equal 'application/json', request.content_type
+    request = build_request(content_type: "application/json")
+    assert_equal "application/json", request.content_type
   end
 
   test "raises with invalid uri" do
@@ -25,9 +26,11 @@ class RequestTest < Minitest::Test
   end
 
   test "sets user agent" do
-    requester = build_request
+    requester = build_request(headers: {"User-Agent" => "CUSTOM"})
     request = requester.request
-    assert_equal requester.options[:user_agent], request["User-Agent"]
+
+    assert_equal "CUSTOM", requester.headers["User-Agent"]
+    assert_equal "CUSTOM", request["User-Agent"]
   end
 
   test "requests gzip encoding" do
@@ -50,6 +53,11 @@ class RequestTest < Minitest::Test
     assert_equal "some body", request.body
   end
 
+  test "sets request body from params key" do
+    request = build_request(request_method: "post", params: "some body").request
+    assert_equal "some body", request.body
+  end
+
   test "sets json body from object" do
     request = build_request(
       request_method: "post",
@@ -66,7 +74,7 @@ class RequestTest < Minitest::Test
     request = build_request(
       request_method: "post",
       data: {a: 1},
-      options: {json_parser: JSON, default_headers: {'Content-Type' => 'application/json'}}
+      options: {json_parser: JSON, default_headers: {"Content-Type" => "application/json"}}
     ).request
 
     expected = {a: 1}.to_json
@@ -121,12 +129,29 @@ class RequestTest < Minitest::Test
   test "performs request when using dsl" do
     register_uri(:post, /.+/)
 
-    response = Aitch.post do
+    Aitch.post do
       url "http://example.org/some/path"
       params a: 1, b: 2
       headers Rendering: "0.1"
       options user: "user", password: "pass"
     end
+
+    assert_equal "/some/path", last_request.uri.request_uri
+    assert_equal :post, last_request.method
+    assert_equal "a=1&b=2", last_request.body
+    assert_equal "0.1", last_request.headers["Rendering"]
+    assert_equal "user:pass", Base64.decode64(last_request.headers["Authorization"].split(" ").last)
+  end
+
+  test "performs request when using kwargs" do
+    register_uri(:post, /.+/)
+
+    Aitch.post(
+      url: "http://example.org/some/path",
+      data: {a: 1, b: 2},
+      headers: {Rendering: "0.1"},
+      options: {user: "user", password: "pass"}
+    )
 
     assert_equal "/some/path", last_request.uri.request_uri
     assert_equal :post, last_request.method

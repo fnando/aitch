@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "test_helper"
 
 class NamespaceTest < Minitest::Test
@@ -7,6 +8,6 @@ class NamespaceTest < Minitest::Test
     ns.config.user_agent = "MyLib/1.0.0"
 
     assert_equal "MyLib/1.0.0", ns.config.user_agent
-    assert_match %r[^Aitch], Aitch.config.user_agent
+    assert_match(/^Aitch/, Aitch.config.user_agent)
   end
 end

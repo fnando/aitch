@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+
 module Aitch
   class DSL
     %w[url options headers data].each do |name|
-      class_eval <<-RUBY
+      class_eval <<~RUBY, __FILE__, __LINE__ + 1
         attr_writer :#{name}
 
         def #{name}(*args)
@@ -12,8 +13,8 @@ module Aitch
       RUBY
     end
 
-    alias_method :params, :data
-    alias_method :body, :data
+    alias params data
+    alias body data
 
     def to_h
       {

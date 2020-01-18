@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Aitch
   module ResponseParser
     module DefaultParser
@@ -6,7 +7,7 @@ module Aitch
         :default
       end
 
-      def self.match?(content_type)
+      def self.match?(_content_type)
         true
       end
 

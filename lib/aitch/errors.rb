@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Aitch
   InvalidURIError        = Class.new(StandardError)
   InvalidHTTPMethodError = Class.new(StandardError)

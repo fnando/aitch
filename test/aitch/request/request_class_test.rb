@@ -1,11 +1,12 @@
 # frozen_string_literal: true
+
 require "test_helper"
 
 class RequestClassTest < Minitest::Test
   test "raises with invalid method" do
-    error = assert_raises(Aitch::InvalidHTTPMethodError) {
+    error = assert_raises(Aitch::InvalidHTTPMethodError) do
       build_request(request_method: "invalid").request
-    }
+    end
 
     assert_equal %[unexpected HTTP verb: "invalid"], error.message
   end

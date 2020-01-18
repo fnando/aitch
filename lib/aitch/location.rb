@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Aitch
   class Location
     attr_reader :redirect_stack, :current_url
@@ -9,7 +10,7 @@ module Aitch
     end
 
     def location
-      return current_url unless current_url.match(%r[\A/])
+      return current_url unless current_url.match(%r{\A/})
 
       uri = find_uri_with_host
       url = ["#{uri.scheme}://#{uri.hostname}"]
@@ -20,8 +21,8 @@ module Aitch
 
     def find_uri_with_host
       redirect_stack.reverse
-        .map {|url| ::URI.parse(url) }
-        .find {|uri| uri.scheme }
+                    .map {|url| ::URI.parse(url) }
+                    .find(&:scheme)
     end
   end
 end
