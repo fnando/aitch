@@ -13,8 +13,8 @@ module Aitch
 
       begin
         @uri = ::URI.parse(url)
-      rescue ::URI::InvalidURIError => e
-        raise InvalidURIError, e
+      rescue ::URI::InvalidURIError => error
+        raise InvalidURIError, error
       end
     end
 
