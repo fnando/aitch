@@ -1,24 +1,23 @@
 # Aitch
 
-[![Build Status](https://travis-ci.org/fnando/aitch.svg)](https://travis-ci.org/fnando/aitch)
+[![Tests](https://github.com/fnando/browser/workflows/Tests/badge.svg)](https://github.com/fnando/browser)
 [![Code Climate](https://codeclimate.com/github/fnando/aitch/badges/gpa.svg)](https://codeclimate.com/github/fnando/aitch)
-[![Test Coverage](https://codeclimate.com/github/fnando/aitch/badges/coverage.svg)](https://codeclimate.com/github/fnando/aitch)
 [![RubyGems](https://badge.fury.io/rb/aitch.svg)](https://rubygems.org/gems/aitch)
 
 A simple HTTP client.
 
 Features:
 
-* Supports Gzip|Deflate response
-* Automatically parses JSON, HTML and XML responses
-* Automatically follows redirect
+- Supports Gzip|Deflate response
+- Automatically parses JSON, HTML and XML responses
+- Automatically follows redirect
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'aitch'
+gem "aitch"
 ```
 
 And then execute:
@@ -115,7 +114,8 @@ response.data             # Parsed response body
 
 #### Parsing JSON, XML and HTML with Nokogiri
 
-If your response is a JSON, XML or a HTML content type, we'll automatically convert the response into the appropriate object.
+If your response is a JSON, XML or a HTML content type, we'll automatically
+convert the response into the appropriate object.
 
 ```ruby
 response = Aitch.get("http://simplesideias.com.br")
@@ -159,7 +159,8 @@ The request:
 Aitch.get("http://example.org")
 ```
 
-If the redirect limit is exceeded, then the `Aitch::TooManyRedirectsError` exception is raised.
+If the redirect limit is exceeded, then the `Aitch::TooManyRedirectsError`
+exception is raised.
 
 ### Basic auth
 
@@ -207,7 +208,8 @@ Request.get("http://example.org")
 
 ### Validating responses
 
-When you know the kind of response you're expecting, you can validate it by specifying the `expect` option.
+When you know the kind of response you're expecting, you can validate it by
+specifying the `expect` option.
 
 ```ruby
 Aitch.get do
@@ -216,7 +218,8 @@ Aitch.get do
 end
 ```
 
-If this request receives anything other than `200`, it will raise a `Aitch::StatusCodeError` exception.
+If this request receives anything other than `200`, it will raise a
+`Aitch::StatusCodeError` exception.
 
 ```
 Expect(200 OK) <=> Actual(404 Not Found)
@@ -226,7 +229,10 @@ You can also provide a list of accepted statuses, like `expect: [200, 201]`.
 
 ### Response Parsers
 
-You can register new response parsers by using `Aitch::ResponseParser.register(name, parser)`, where parser must implement the methods `match?(content_type)` and `load(response_body)`. This is how you could load CSV values.
+You can register new response parsers by using
+`Aitch::ResponseParser.register(name, parser)`, where parser must implement the
+methods `match?(content_type)` and `load(response_body)`. This is how you could
+load CSV values.
 
 ```ruby
 require "csv"
@@ -248,7 +254,8 @@ end
 Aitch::ResponseParser.prepend(:csv, CSVParser)
 ```
 
-The default behavior is returning the response body. You can replace it as the following:
+The default behavior is returning the response body. You can replace it as the
+following:
 
 ```ruby
 module DefaultParser
@@ -272,7 +279,8 @@ Aitch::ResponseParser.append(:default, DefaultParser)
 
 Aitch comes with response parsers for HTML, XML and JSON.
 
-By default, the JSON parser will be `JSON`. To set it to something else, use `Aitch::ResponseParser::JSONParser.engine`.
+By default, the JSON parser will be `JSON`. To set it to something else, use
+`Aitch::ResponseParser::JSONParser.engine`.
 
 ```ruby
 require "oj"

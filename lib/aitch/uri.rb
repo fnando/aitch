@@ -6,7 +6,7 @@ module Aitch
 
     def_delegators :@uri, :host, :port, :scheme
 
-    def initialize(url, data = {}, request_has_body = false)
+    def initialize(url, data = {}, request_has_body = false) # rubocop:disable Style/OptionalBooleanParameter
       @url = url
       @data = data
       @request_has_body = request_has_body
