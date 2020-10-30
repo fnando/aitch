@@ -2,7 +2,8 @@
 
 [![Tests](https://github.com/fnando/aitch/workflows/Tests/badge.svg)](https://github.com/fnando/aitch)
 [![Code Climate](https://codeclimate.com/github/fnando/aitch/badges/gpa.svg)](https://codeclimate.com/github/fnando/aitch)
-[![RubyGems](https://badge.fury.io/rb/aitch.svg)](https://rubygems.org/gems/aitch)
+[![Gem Version](https://img.shields.io/gem/v/aitch.svg)](https://rubygems.org/gems/aitch)
+[![Gem Downloads](https://img.shields.io/gem/dt/aitch.svg)](https://rubygems.org/gems/aitch)
 
 A simple HTTP client.
 
