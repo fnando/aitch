@@ -2,12 +2,7 @@
 
 module Aitch
   class Request
-    attr_accessor :request_method
-    attr_accessor :url
-    attr_accessor :data
-    attr_accessor :headers
-    attr_accessor :options
-    attr_accessor :redirects
+    attr_accessor :request_method, :url, :data, :headers, :options, :redirects
 
     alias params= data=
     alias body= data=

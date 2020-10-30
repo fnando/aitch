@@ -37,12 +37,6 @@ class FalseClass
 end
 
 class Array
-  # Calls <tt>to_param</tt> on all its elements and joins the result with
-  # slashes. This is used by <tt>url_for</tt> in Action Pack.
-  def to_param
-    collect(&:to_param).join "/"
-  end
-
   # Converts an array into a string suitable for use as a URL query string,
   # using the given +key+ as the param name.
   #

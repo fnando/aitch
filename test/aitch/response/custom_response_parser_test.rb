@@ -6,10 +6,6 @@ require "csv"
 class CustomResponseParserTest < Minitest::Test
   setup do
     parser = Class.new do
-      def self.type
-        :csv
-      end
-
       def self.match?(content_type)
         content_type =~ /csv/
       end

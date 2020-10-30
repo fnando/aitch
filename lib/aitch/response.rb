@@ -83,7 +83,7 @@ module Aitch
     end
 
     def respond_to_missing?(name, _include_private = false)
-      headers.key?(name.to_s)
+      headers.key?(name.to_s) || super
     end
 
     def description
