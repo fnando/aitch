@@ -1,6 +1,6 @@
 # Aitch
 
-[![Tests](https://github.com/fnando/browser/workflows/Tests/badge.svg)](https://github.com/fnando/browser)
+[![Tests](https://github.com/fnando/aitch/workflows/Tests/badge.svg)](https://github.com/fnando/aitch)
 [![Code Climate](https://codeclimate.com/github/fnando/aitch/badges/gpa.svg)](https://codeclimate.com/github/fnando/aitch)
 [![RubyGems](https://badge.fury.io/rb/aitch.svg)](https://rubygems.org/gems/aitch)
 
