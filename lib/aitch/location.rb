@@ -10,7 +10,7 @@ module Aitch
     end
 
     def location
-      return current_url unless current_url.match(%r{\A/})
+      return current_url unless current_url.match?(%r{\A/}) # rubocop:disable Performance/StartWith
 
       uri = find_uri_with_host
       url = ["#{uri.scheme}://#{uri.hostname}"]

@@ -71,7 +71,7 @@ module Aitch
       body_data = data
       body_data = data.to_h if data.respond_to?(:to_h)
 
-      if content_type.to_s =~ /\bjson\b/
+      if content_type.to_s.match?(/\bjson\b/)
         body_data = ResponseParser::JSONParser.engine.dump(body_data)
       end
 

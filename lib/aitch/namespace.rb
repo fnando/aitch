@@ -25,7 +25,7 @@ module Aitch
       headers ||= {}
       options ||= {}
 
-      if block_given?
+      if block
         dsl = DSL.new
         dsl.instance_eval(&block)
         args = dsl.to_h
@@ -38,10 +38,8 @@ module Aitch
         }
       end
 
-      args.merge!(
-        request_method: request_method,
-        options: config.to_h.merge(Utils.symbolize_keys(args[:options]))
-      )
+      args[:request_method] = request_method
+      args[:options] = config.to_h.merge(Utils.symbolize_keys(args[:options]))
 
       Request.new(args).perform
     end
