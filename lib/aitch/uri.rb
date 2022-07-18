@@ -27,7 +27,7 @@ module Aitch
     end
 
     def request_uri
-      [path, query, fragment].compact.join("")
+      [path, query, fragment].compact.join
     end
 
     def fragment

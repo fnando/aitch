@@ -7,7 +7,7 @@ class CustomResponseParserTest < Minitest::Test
   setup do
     parser = Class.new do
       def self.match?(content_type)
-        content_type =~ /csv/
+        content_type.include?("csv")
       end
 
       def self.load(source)

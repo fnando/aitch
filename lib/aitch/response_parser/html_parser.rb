@@ -8,7 +8,7 @@ module Aitch
       end
 
       def self.match?(content_type)
-        content_type =~ /html/
+        content_type.include?("html")
       end
 
       def self.load(source)

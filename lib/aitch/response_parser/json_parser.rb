@@ -14,7 +14,7 @@ module Aitch
       end
 
       def self.match?(content_type)
-        content_type =~ /json/
+        content_type.include?("json")
       end
 
       def self.load(source)

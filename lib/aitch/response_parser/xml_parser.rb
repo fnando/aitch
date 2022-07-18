@@ -8,7 +8,7 @@ module Aitch
       end
 
       def self.match?(content_type)
-        content_type =~ /xml/
+        content_type.include?("xml")
       end
 
       def self.load(source)

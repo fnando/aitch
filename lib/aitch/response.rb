@@ -53,15 +53,15 @@ module Aitch
     end
 
     def json?
-      content_type =~ /json/
+      content_type.include?("json")
     end
 
     def xml?
-      content_type =~ /xml/
+      content_type.include?("xml")
     end
 
     def html?
-      content_type =~ /html/
+      content_type.include?("html")
     end
 
     def data

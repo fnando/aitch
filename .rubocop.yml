@@ -4,6 +4,7 @@ inherit_gem:
 
 AllCops:
   TargetRubyVersion: 2.5
+  NewCops: enable
 
 Layout/LineLength:
   Exclude:
@@ -12,15 +13,3 @@ Layout/LineLength:
 Naming/AccessorMethodName:
   Exclude:
     - lib/aitch/request.rb
-
-Metrics/ClassLength:
-  Enabled: false
-
-Metrics/AbcSize:
-  Enabled: false
-
-Metrics/MethodLength:
-  Enabled: false
-
-Metrics/ParameterLists:
-  Enabled: false
