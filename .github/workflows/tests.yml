@@ -1,3 +1,4 @@
+---
 name: Tests
 
 on:
@@ -7,10 +8,6 @@ on:
   push:
     branches:
       - main
-
-  schedule:
-    - cron: "0 10 * * *"
-
 jobs:
   build:
     name: Tests with Ruby ${{ matrix.ruby }}
