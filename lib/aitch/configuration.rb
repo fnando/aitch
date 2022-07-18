@@ -23,12 +23,16 @@ module Aitch
     # Set the logger.
     attr_accessor :logger
 
+    # Set the base url.
+    attr_accessor :base_url
+
     def initialize
       @timeout = 10
       @redirect_limit = 5
       @follow_redirect = true
       @user_agent = "Aitch/#{Aitch::VERSION} (http://rubygems.org/gems/aitch)"
       @default_headers = {}
+      @base_url = nil
     end
 
     def to_h

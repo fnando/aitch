@@ -57,7 +57,15 @@ module Aitch
     end
 
     def uri
-      @uri ||= URI.new(url, data, http_method_class::REQUEST_HAS_BODY)
+      @uri ||= begin
+        normalized_url = if url.start_with?("/") && options[:base_url]
+                           File.join(options[:base_url], url)
+                         else
+                           url
+                         end
+
+        URI.new(normalized_url, data, http_method_class::REQUEST_HAS_BODY)
+      end
     end
 
     def http_method_class

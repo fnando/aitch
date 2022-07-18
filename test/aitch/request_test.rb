@@ -159,4 +159,17 @@ class RequestTest < Minitest::Test
     assert_equal "0.1", last_request.headers["Rendering"]
     assert_equal "user:pass", Base64.decode64(last_request.headers["Authorization"].split(" ").last)
   end
+
+  test "uses base url" do
+    register_uri(:get, /.+/)
+
+    client = Aitch::Namespace.new
+    client.configure {|c| c.base_url = "https://example.com" }
+
+    client.get("/some/path")
+
+    assert_equal "/some/path", last_request.uri.request_uri
+    assert_equal "example.com", last_request.uri.host
+    assert_equal "https", last_request.uri.scheme
+  end
 end

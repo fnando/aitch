@@ -54,6 +54,9 @@ Aitch.configure do |config|
 
   # Set the logger.
   config.logger = nil
+
+  # Set the base url.
+  config.base_url = nil
 end
 ```
 
@@ -286,6 +289,23 @@ By default, the JSON parser will be `JSON`. To set it to something else, use
 ```ruby
 require "oj"
 Aitch::ResponseParser::JSONParser.engine = Oj
+```
+
+### Setting the base url
+
+When you're creating a wrapper for an API, usually the hostname is the same for
+the whole API. In this case, you can avoid having to pass it around all the time
+by setting `Aitch::Configuration#base_url`. This option is meant to be used when
+you instantiate a new namespace.
+
+```ruby
+Client = Aitch::Namespace.new
+
+Client.configure do |config|
+  config.base_url = "https://api.example.com"
+end
+
+Client.get("/users")
 ```
 
 ## Contributing
