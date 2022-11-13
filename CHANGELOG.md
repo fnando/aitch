@@ -1,6 +1,6 @@
 # Changelog
 
-- **unreleased**
+- **1.2.1**
   - Avoid calling `to_h` when params are array-like.
 - **1.2.0**
   - Add support to base url.
