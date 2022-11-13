@@ -77,7 +77,7 @@ module Aitch
 
     private def set_body(request)
       body_data = data
-      body_data = data.to_h if data.respond_to?(:to_h)
+      body_data = data.to_h if data.respond_to?(:to_h) && !data.is_a?(Array)
 
       if content_type.to_s.match?(/\bjson\b/)
         body_data = ResponseParser::JSONParser.engine.dump(body_data)

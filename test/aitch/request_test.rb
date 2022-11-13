@@ -87,6 +87,18 @@ class RequestTest < Minitest::Test
     assert_equal "a=1", request.body
   end
 
+  test "sets json body from array" do
+    data = [1, 2, 3]
+    request = build_request(
+      request_method: "post",
+      data: data,
+      content_type: "application/json",
+      options: {json_parser: JSON}
+    ).request
+
+    assert_equal "[1,2,3]", request.body
+  end
+
   test "sets request body from to_s protocol" do
     data = stub(to_s: "some body")
     request = build_request(request_method: "post", data: data).request

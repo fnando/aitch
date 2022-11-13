@@ -13,3 +13,6 @@ Layout/LineLength:
 Naming/AccessorMethodName:
   Exclude:
     - lib/aitch/request.rb
+
+Style/DocumentDynamicEvalDefinition:
+  Enabled: false
