@@ -4,6 +4,14 @@ module Aitch
   class Request
     attr_accessor :request_method, :url, :data, :headers, :options, :redirects
 
+    CONTENT_TYPE = "Content-Type"
+    USER_AGENT = "User-Agent"
+    ACCEPT_ENCODING = "Accept-Encoding"
+    GZIP_DEFLATE = "gzip,deflate"
+    HTTPS = "https"
+    HEADER_SEPARATOR_RE = /[-_]/.freeze
+    JSON_RE = /\bjson\b/.freeze
+
     alias params= data=
     alias body= data=
 
@@ -30,12 +38,12 @@ module Aitch
     end
 
     def content_type=(content_type)
-      headers["Content-Type"] = content_type
+      headers[CONTENT_TYPE] = content_type
     end
 
     def content_type
-      headers["Content-Type"] ||
-        options.fetch(:default_headers, {})["Content-Type"]
+      headers[CONTENT_TYPE] ||
+        options.fetch(:default_headers, {})[CONTENT_TYPE]
     end
 
     def request
@@ -79,7 +87,7 @@ module Aitch
       body_data = data
       body_data = data.to_h if data.respond_to?(:to_h) && !data.is_a?(Array)
 
-      if content_type.to_s.match?(/\bjson\b/)
+      if content_type.to_s.match?(JSON_RE)
         body_data = ResponseParser::JSONParser.engine.dump(body_data)
       end
 
@@ -95,7 +103,8 @@ module Aitch
 
       all_headers.each do |name, value|
         value = value.respond_to?(:call) ? value.call : value
-        request[name.to_s] = value.to_s
+        name = name.to_s.split(HEADER_SEPARATOR_RE).map(&:capitalize).join("-")
+        request[name] = value.to_s
       end
     end
 
@@ -106,7 +115,7 @@ module Aitch
     end
 
     private def set_https(client)
-      client.use_ssl = uri.scheme == "https"
+      client.use_ssl = uri.scheme == HTTPS
       client.verify_mode = OpenSSL::SSL::VERIFY_PEER
     end
 
@@ -120,11 +129,11 @@ module Aitch
     end
 
     private def set_user_agent(request)
-      request["User-Agent"] = options[:user_agent]
+      request[USER_AGENT] = options[:user_agent]
     end
 
     private def set_gzip(request)
-      request["Accept-Encoding"] = "gzip,deflate"
+      request[ACCEPT_ENCODING] = GZIP_DEFLATE
     end
 
     def timeout_exception

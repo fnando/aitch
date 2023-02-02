@@ -1,5 +1,7 @@
 # Changelog
 
+- **Unreleased**
+  - Transform header key before assigning values.
 - **1.2.1**
   - Avoid calling `to_h` when params are array-like.
 - **1.2.0**

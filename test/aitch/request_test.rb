@@ -5,6 +5,7 @@ require "test_helper"
 class RequestTest < Minitest::Test
   test "sets content type" do
     request = build_request(content_type: "application/json")
+
     assert_equal "application/json", request.content_type
   end
 
@@ -35,26 +36,31 @@ class RequestTest < Minitest::Test
 
   test "requests gzip encoding" do
     request = build_request.request
+
     assert_equal "gzip,deflate", request["Accept-Encoding"]
   end
 
   test "sets path" do
     request = build_request(url: "http://example.org/some/path").request
+
     assert_equal "/some/path", request.path
   end
 
   test "sets request body from hash" do
     request = build_request(request_method: "post", data: {a: 1}).request
+
     assert_equal "a=1", request.body
   end
 
   test "sets request body from string" do
     request = build_request(request_method: "post", data: "some body").request
+
     assert_equal "some body", request.body
   end
 
   test "sets request body from params key" do
     request = build_request(request_method: "post", params: "some body").request
+
     assert_equal "some body", request.body
   end
 
@@ -67,6 +73,7 @@ class RequestTest < Minitest::Test
     ).request
 
     expected = {a: 1}.to_json
+
     assert_equal expected, request.body
   end
 
@@ -78,12 +85,14 @@ class RequestTest < Minitest::Test
     ).request
 
     expected = {a: 1}.to_json
+
     assert_equal expected, request.body
   end
 
   test "sets request body from to_h protocol" do
     data = stub(to_h: {a: 1})
     request = build_request(request_method: "post", data: data).request
+
     assert_equal "a=1", request.body
   end
 
@@ -123,11 +132,19 @@ class RequestTest < Minitest::Test
 
   test "sets custom headers" do
     request = build_request(headers: {"HEADER" => "VALUE"}).request
+
     assert_equal "VALUE", request["HEADER"]
+  end
+
+  test "sets headers from underscored headers" do
+    request = build_request(headers: {content_type: "text/plain"}).request
+
+    assert_equal "text/plain", request["Content-Type"]
   end
 
   test "executes headers with callable protocol" do
     request = build_request(headers: {"HEADER" => -> { "VALUE" }}).request
+
     assert_equal "VALUE", request["HEADER"]
   end
 

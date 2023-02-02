@@ -4,25 +4,25 @@ require "test_helper"
 
 class AitchTest < Minitest::Test
   test "defines public API" do
-    assert Aitch.respond_to?(:get)
-    assert Aitch.respond_to?(:get!)
-    assert Aitch.respond_to?(:post)
-    assert Aitch.respond_to?(:post!)
-    assert Aitch.respond_to?(:put)
-    assert Aitch.respond_to?(:put!)
-    assert Aitch.respond_to?(:patch)
-    assert Aitch.respond_to?(:patch!)
-    assert Aitch.respond_to?(:delete)
-    assert Aitch.respond_to?(:delete!)
-    assert Aitch.respond_to?(:head)
-    assert Aitch.respond_to?(:head!)
-    assert Aitch.respond_to?(:options)
-    assert Aitch.respond_to?(:options!)
-    assert Aitch.respond_to?(:trace)
-    assert Aitch.respond_to?(:trace!)
-    assert Aitch.respond_to?(:execute)
-    assert Aitch.respond_to?(:execute!)
-    assert Aitch.respond_to?(:config)
-    assert Aitch.respond_to?(:configuration)
+    assert_respond_to Aitch, :get
+    assert_respond_to Aitch, :get!
+    assert_respond_to Aitch, :post
+    assert_respond_to Aitch, :post!
+    assert_respond_to Aitch, :put
+    assert_respond_to Aitch, :put!
+    assert_respond_to Aitch, :patch
+    assert_respond_to Aitch, :patch!
+    assert_respond_to Aitch, :delete
+    assert_respond_to Aitch, :delete!
+    assert_respond_to Aitch, :head
+    assert_respond_to Aitch, :head!
+    assert_respond_to Aitch, :options
+    assert_respond_to Aitch, :options!
+    assert_respond_to Aitch, :trace
+    assert_respond_to Aitch, :trace!
+    assert_respond_to Aitch, :execute
+    assert_respond_to Aitch, :execute!
+    assert_respond_to Aitch, :config
+    assert_respond_to Aitch, :configuration
   end
 end

@@ -7,7 +7,7 @@ class HtmlResponseTest < Minitest::Test
     register_uri(:get, "http://example.org/", body: "", content_type: "text/html")
     response = Aitch.get("http://example.org/")
 
-    assert response.html?
+    assert_predicate response, :html?
   end
 
   test "returns html" do

@@ -3,8 +3,11 @@
 module Aitch
   module Utils
     extend self
+
+    MATCHER = /(?<=.)(URI|[A-Z])/.freeze
+
     def underscore(string)
-      string = string.gsub(/(?<=.)(URI|[A-Z])/) do |char|
+      string = string.gsub(MATCHER) do |char|
         "_#{char}"
       end
 

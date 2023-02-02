@@ -7,31 +7,37 @@ class DslTest < Minitest::Test
 
   test "sets url" do
     dsl.url "URL"
+
     assert_equal "URL", dsl.url
   end
 
   test "sets options" do
     dsl.options "OPTIONS"
+
     assert_equal "OPTIONS", dsl.options
   end
 
   test "sets headers" do
     dsl.headers "HEADERS"
+
     assert_equal "HEADERS", dsl.headers
   end
 
   test "sets data" do
     dsl.data "DATA"
+
     assert_equal "DATA", dsl.data
   end
 
   test "sets data through params" do
     dsl.params "PARAMS"
+
     assert_equal "PARAMS", dsl.data
   end
 
   test "sets data through body" do
     dsl.body "BODY"
+
     assert_equal "BODY", dsl.data
   end
 

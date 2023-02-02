@@ -14,7 +14,7 @@ class FollowRedirectTest < Minitest::Test
 
     response = Aitch.get("http://example.org/")
 
-    refute response.redirect?
+    refute_predicate response, :redirect?
     assert_equal "Hello", response.body
     assert_equal ["http://example.org/", "http://example.com/"], response.redirected_from
     assert_equal "http://www.example.com/", response.url

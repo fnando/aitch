@@ -33,6 +33,7 @@ class UriTest < Minitest::Test
 
   test "returns request uri" do
     uri = Aitch::URI.new("http://example.org/some/path?a=1&b=2#hello", c: 3)
+
     assert_equal "/some/path?a=1&b=2&c=3#hello", uri.request_uri
   end
 end

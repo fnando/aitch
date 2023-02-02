@@ -41,6 +41,6 @@ class ExecuteBangTest < Minitest::Test
     response = stub(error?: true, error: "ERROR")
     Aitch::Request.any_instance.stubs(:perform).returns(response)
 
-    assert_raises("ERROR") { Aitch.get!("URL") }
+    assert_raises(StandardError, "ERROR") { Aitch.get!("URL") }
   end
 end

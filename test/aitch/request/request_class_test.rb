@@ -23,6 +23,7 @@ class RequestClassTest < Minitest::Test
   ].each do |method|
     test "instantiates #{method.upcase} method" do
       request = build_request(request_method: method).request
+
       assert_equal "Net::HTTP::#{method.capitalize}", request.class.name
     end
   end

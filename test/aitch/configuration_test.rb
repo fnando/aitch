@@ -9,6 +9,7 @@ class ConfigurationTest < Minitest::Test
 
   test "sets default user agent" do
     user_agent = "Aitch/#{Aitch::VERSION} (http://rubygems.org/gems/aitch)"
+
     assert_equal user_agent, Aitch::Configuration.new.user_agent
   end
 
@@ -17,7 +18,7 @@ class ConfigurationTest < Minitest::Test
   end
 
   test "sets default headers" do
-    assert_equal({}, Aitch::Configuration.new.default_headers)
+    assert_empty(Aitch::Configuration.new.default_headers)
   end
 
   test "configures aitch" do

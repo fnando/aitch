@@ -7,7 +7,7 @@ class JsonResponseTest < Minitest::Test
     register_uri(:get, "http://example.org/", body: "[]", content_type: "application/json")
     response = Aitch.get("http://example.org/")
 
-    assert response.json?
+    assert_predicate response, :json?
   end
 
   test "returns json" do

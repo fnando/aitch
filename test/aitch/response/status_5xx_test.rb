@@ -7,7 +7,7 @@ class Status5xxTest < Minitest::Test
     register_uri(:get, "http://example.org/", status: 500)
     response = Aitch.get("http://example.org/")
 
-    assert response.error?
+    assert_predicate response, :error?
   end
 
   test "sets error" do

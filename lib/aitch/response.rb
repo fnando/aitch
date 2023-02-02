@@ -4,11 +4,20 @@ module Aitch
   class Response
     extend Forwardable
 
+    JSON_STR = "json"
+    XML_STR = "xml"
+    HTML_STR = "html"
+    EMPTY_STR = ""
+    DOUBLE_COLON = "::"
+    SPACE_STR = " "
+    ERROR_SUFFIX = "_error"
+    X_RE = /^x-/.freeze
+
     def_delegators :@http_response, :content_type
     attr_accessor :redirected_from, :url
 
     def self.description_for_code(code)
-      [code, DESCRIPTION[code]].compact.join(" ")
+      [code, DESCRIPTION[code]].compact.join(SPACE_STR)
     end
 
     def initialize(options, http_response)
@@ -19,8 +28,8 @@ module Aitch
 
     ERRORS.each do |status_code, exception|
       method_name = Utils
-                    .underscore(exception.name.split("::").last)
-                    .gsub("_error", "")
+                    .underscore(exception.name.split(DOUBLE_COLON).last)
+                    .gsub(ERROR_SUFFIX, EMPTY_STR)
 
       define_method "#{method_name}?" do
         code == status_code
@@ -53,15 +62,15 @@ module Aitch
     end
 
     def json?
-      content_type.include?("json")
+      content_type.include?(JSON_STR)
     end
 
     def xml?
-      content_type.include?("xml")
+      content_type.include?(XML_STR)
     end
 
     def html?
-      content_type.include?("html")
+      content_type.include?(HTML_STR)
     end
 
     def data
@@ -71,7 +80,7 @@ module Aitch
     def headers
       @headers ||= {}.tap do |headers|
         @http_response.each_header do |name, value|
-          headers[name.gsub(/^x-/, "")] = value
+          headers[name.gsub(X_RE, EMPTY_STR)] = value
         end
       end
     end

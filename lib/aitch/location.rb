@@ -2,6 +2,8 @@
 
 module Aitch
   class Location
+    MATCHER = %r{\A/}.freeze
+
     attr_reader :redirect_stack, :current_url
 
     def initialize(redirect_stack, current_url)
@@ -10,7 +12,7 @@ module Aitch
     end
 
     def location
-      return current_url unless current_url.match?(%r{\A/}) # rubocop:disable Performance/StartWith
+      return current_url unless current_url.match?(MATCHER)
 
       uri = find_uri_with_host
       url = ["#{uri.scheme}://#{uri.hostname}"]

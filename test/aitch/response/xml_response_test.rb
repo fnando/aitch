@@ -7,7 +7,7 @@ class XmlResponseTest < Minitest::Test
     register_uri(:get, "http://example.org/", body: "[]", content_type: "application/xml")
     response = Aitch.get("http://example.org/")
 
-    assert response.xml?
+    assert_predicate response, :xml?
   end
 
   test "returns xml" do

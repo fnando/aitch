@@ -6,12 +6,14 @@ class ResponseTest < Minitest::Test
   test "has body" do
     register_uri(:get, "http://example.org/", body: "Hello")
     response = Aitch.get("http://example.org/")
+
     assert_equal "Hello", response.body
   end
 
   test "sets current url" do
     register_uri(:get, "http://example.org/", body: "Hello")
     response = Aitch.get("http://example.org/")
+
     assert_equal "http://example.org/", response.url
   end
 
@@ -39,19 +41,22 @@ class ResponseTest < Minitest::Test
   test "returns status code" do
     register_uri(:get, "http://example.org/", body: "")
     response = Aitch.get("http://example.org/")
+
     assert_equal 200, response.code
   end
 
   test "returns content type" do
     register_uri(:get, "http://example.org/", content_type: "text/html")
     response = Aitch.get("http://example.org/")
+
     assert_equal "text/html", response.content_type
   end
 
   test "detects as successful response" do
     register_uri(:get, "http://example.org/", content_type: "text/html")
     response = Aitch.get("http://example.org/")
-    assert response.success?
+
+    assert_predicate response, :success?
   end
 
   test "returns headers" do
@@ -74,7 +79,7 @@ class ResponseTest < Minitest::Test
     response = Aitch.get("http://example.org/")
 
     assert_equal "0.003", response.runtime
-    assert response.respond_to?(:runtime)
+    assert_respond_to response, :runtime
   end
 
   test "raises when have no method" do

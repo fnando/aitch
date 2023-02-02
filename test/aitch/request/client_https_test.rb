@@ -7,7 +7,7 @@ class ClientHttpsTest < Minitest::Test
   let(:client) { request.client }
 
   test "sets https" do
-    assert client.use_ssl?
+    assert_predicate client, :use_ssl?
   end
 
   test "sets verification mode" do
@@ -16,6 +16,7 @@ class ClientHttpsTest < Minitest::Test
 
   test "sets timeout" do
     request.options[:timeout] = 20
+
     assert_equal 20, client.read_timeout
   end
 end

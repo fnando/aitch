@@ -16,3 +16,9 @@ Naming/AccessorMethodName:
 
 Style/DocumentDynamicEvalDefinition:
   Enabled: false
+
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+Minitest/MultipleAssertions:
+  Enabled: false
