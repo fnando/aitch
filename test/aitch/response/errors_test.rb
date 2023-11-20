@@ -8,7 +8,7 @@ class ErrorsTest < Minitest::Test
 
     test "detects response as #{name}" do
       config = {}
-      http_response = stub(code: code)
+      http_response = stub(code: code, content_type: "text/html")
       response = Aitch::Response.new(config, http_response)
 
       assert response.public_send("#{name}?")

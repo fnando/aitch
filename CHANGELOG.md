@@ -1,5 +1,7 @@
 # Changelog
 
+- **unreleased**
+  - Fix error when content type is not available on response.
 - **1.2.2**
   - Transform header key before assigning values.
 - **1.2.1**

@@ -102,7 +102,7 @@ module Aitch
       all_headers = options.fetch(:default_headers, {}).merge(headers)
 
       all_headers.each do |name, value|
-        value = value.respond_to?(:call) ? value.call : value
+        value = value.call if value.respond_to?(:call)
         name = name.to_s.split(HEADER_SEPARATOR_RE).map(&:capitalize).join("-")
         request[name] = value.to_s
       end

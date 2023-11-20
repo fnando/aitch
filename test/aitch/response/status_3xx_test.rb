@@ -6,11 +6,20 @@ class Status3xxTest < Minitest::Test
   setup { Aitch.configuration.follow_redirect = false }
 
   test "sets default redirected from" do
-    assert_empty Aitch::Response.new({}, stub("response")).redirected_from
+    response =
+      Aitch::Response.new({}, stub("response", content_type: "text/html"))
+
+    assert_empty response.redirected_from
   end
 
   test "uses provided redirected from" do
-    assert_equal ["URL"], Aitch::Response.new({redirected_from: ["URL"]}, stub("response")).redirected_from
+    response =
+      Aitch::Response.new(
+        {redirected_from: ["URL"]},
+        stub("response", content_type: "text/html")
+      )
+
+    assert_equal ["URL"], response.redirected_from
   end
 
   test "has body" do

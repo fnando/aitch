@@ -2,8 +2,6 @@
 
 module Aitch
   class Response
-    extend Forwardable
-
     JSON_STR = "json"
     XML_STR = "xml"
     HTML_STR = "html"
@@ -13,8 +11,7 @@ module Aitch
     ERROR_SUFFIX = "_error"
     X_RE = /^x-/.freeze
 
-    def_delegators :@http_response, :content_type
-    attr_accessor :redirected_from, :url
+    attr_accessor :redirected_from, :url, :content_type
 
     def self.description_for_code(code)
       [code, DESCRIPTION[code]].compact.join(SPACE_STR)
@@ -24,6 +21,7 @@ module Aitch
       @options = options
       @http_response = http_response
       @redirected_from = options.fetch(:redirected_from, [])
+      @content_type = http_response.content_type.to_s
     end
 
     ERRORS.each do |status_code, exception|

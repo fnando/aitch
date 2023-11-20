@@ -150,7 +150,7 @@ class RequestTest < Minitest::Test
 
   test "sets basic auth credentials" do
     request = build_request(options: {user: "USER", password: "PASS"}).request
-    credentials = Base64.decode64(request["Authorization"].gsub(/Basic /, ""))
+    credentials = Base64.decode64(request["Authorization"].gsub("Basic ", ""))
 
     assert_equal "USER:PASS", credentials
   end
