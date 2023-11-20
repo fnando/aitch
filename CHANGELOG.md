@@ -1,6 +1,6 @@
 # Changelog
 
-- **unreleased**
+- **2.0.0**
   - Fix error when content type is not available on response.
   - Stop supporting old ruby versions (require 3.0+).
 - **1.2.2**
