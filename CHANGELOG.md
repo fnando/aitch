@@ -2,6 +2,7 @@
 
 - **unreleased**
   - Fix error when content type is not available on response.
+  - Stop supporting old ruby versions (require 3.0+).
 - **1.2.2**
   - Transform header key before assigning values.
 - **1.2.1**

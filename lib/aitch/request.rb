@@ -9,8 +9,8 @@ module Aitch
     ACCEPT_ENCODING = "Accept-Encoding"
     GZIP_DEFLATE = "gzip,deflate"
     HTTPS = "https"
-    HEADER_SEPARATOR_RE = /[-_]/.freeze
-    JSON_RE = /\bjson\b/.freeze
+    HEADER_SEPARATOR_RE = /[-_]/
+    JSON_RE = /\bjson\b/
 
     alias params= data=
     alias body= data=

@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = spec.description
   spec.homepage      = "http://rubygems.org/gems/aitch"
   spec.license       = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.5.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 3.0.0")
   spec.metadata["rubygems_mfa_required"] = "true"
 
   spec.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)

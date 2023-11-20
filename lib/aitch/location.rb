@@ -2,7 +2,7 @@
 
 module Aitch
   class Location
-    MATCHER = %r{\A/}.freeze
+    MATCHER = %r{\A/}
 
     attr_reader :redirect_stack, :current_url
 

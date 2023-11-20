@@ -9,7 +9,7 @@ module Aitch
     DOUBLE_COLON = "::"
     SPACE_STR = " "
     ERROR_SUFFIX = "_error"
-    X_RE = /^x-/.freeze
+    X_RE = /^x-/
 
     attr_accessor :redirected_from, :url, :content_type
 
