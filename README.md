@@ -1,6 +1,6 @@
 # Aitch
 
-[![Tests](https://github.com/fnando/aitch/workflows/Tests/badge.svg)](https://github.com/fnando/aitch)
+[![Tests](https://github.com/fnando/aitch/actions/workflows/tests.yml/badge.svg)](https://github.com/fnando/aitch/actions/workflows/tests.yml)
 [![Code Climate](https://codeclimate.com/github/fnando/aitch/badges/gpa.svg)](https://codeclimate.com/github/fnando/aitch)
 [![Gem Version](https://img.shields.io/gem/v/aitch.svg)](https://rubygems.org/gems/aitch)
 [![Gem Downloads](https://img.shields.io/gem/dt/aitch.svg)](https://rubygems.org/gems/aitch)
