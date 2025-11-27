@@ -7,6 +7,10 @@ class ConfigurationTest < Minitest::Test
     assert_equal 10, Aitch::Configuration.new.timeout
   end
 
+  test "sets default retries" do
+    assert_equal 1, Aitch::Configuration.new.retries
+  end
+
   test "sets default user agent" do
     user_agent = "Aitch/#{Aitch::VERSION} (http://rubygems.org/gems/aitch)"
 

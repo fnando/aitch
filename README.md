@@ -43,6 +43,11 @@ Aitch.configure do |config|
   # Set default headers.
   config.default_headers = {}
 
+  # Set number of retries.
+  # See Net::HTTP#max_retries to know which errors trigger a new request
+  # attempt.
+  config.retries = 1
+
   # Set follow redirect.
   config.follow_redirect = true
 

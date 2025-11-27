@@ -17,6 +17,20 @@ module Aitch
     # Set redirection limit.
     attr_accessor :redirect_limit
 
+    # Set number of retries. This will be set as `Net::HTTP#max_retries`.
+    # Defaults to 1 (ruby's default). Retries are triggered for the following
+    # errors:
+    #
+    #  - `Net::ReadTimeout`
+    #  - `IOError`
+    #  - `EOFError`
+    #  - `Errno::ECONNRESET`
+    #  - `Errno::ECONNABORTED`
+    #  - `Errno::EPIPE`
+    #  - `OpenSSL::SSL::SSLError`
+    #  - `Timeout::Error`
+    attr_accessor :retries
+
     # Set the user agent.
     attr_accessor :user_agent
 
@@ -28,6 +42,7 @@ module Aitch
 
     def initialize
       @timeout = 10
+      @retries = 1
       @redirect_limit = 5
       @follow_redirect = true
       @user_agent = "Aitch/#{Aitch::VERSION} (http://rubygems.org/gems/aitch)"

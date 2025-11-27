@@ -9,6 +9,13 @@ class RequestTest < Minitest::Test
     assert_equal "application/json", request.content_type
   end
 
+  test "sets retries" do
+    request = build_request(options: {retries: 3})
+
+    assert_equal 3, request.options[:retries]
+    assert_equal 3, request.client.max_retries
+  end
+
   test "raises with invalid uri" do
     assert_raises(Aitch::InvalidURIError) { build_request(url: "\\").uri }
   end

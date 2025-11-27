@@ -60,6 +60,7 @@ module Aitch
       @client ||= Net::HTTP.new(uri.host, uri.port).tap do |client|
         set_https(client)
         set_timeout(client)
+        set_max_retries(client)
         set_logger(client)
       end
     end
@@ -134,6 +135,10 @@ module Aitch
 
     private def set_gzip(request)
       request[ACCEPT_ENCODING] = GZIP_DEFLATE
+    end
+
+    private def set_max_retries(client)
+      client.max_retries = options.fetch(:retries, 1)
     end
 
     def timeout_exception

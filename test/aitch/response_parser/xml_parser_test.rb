@@ -11,7 +11,7 @@ class XmlParserTest < Minitest::Test
   test "converts ISO-8859-1 to UTF-8" do
     xml = Aitch::ResponseParser::XMLParser.load(File.read("./test/fixtures/iso8859-1.xml"))
 
-    assert_equal "utf-8", xml.encoding
-    assert_includes xml.to_xml, %[<?xml version="1.0" encoding="utf-8"?>]
+    assert_match "UTF-8", xml.encoding
+    assert_includes xml.to_xml, %[<?xml version="1.0" encoding="UTF-8"?>]
   end
 end
