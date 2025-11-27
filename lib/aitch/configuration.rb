@@ -9,7 +9,7 @@ module Aitch
     attr_accessor :timeout
 
     # Set default headers.
-    attr_accessor :default_headers
+    attr_reader :default_headers
 
     # Set follow redirect.
     attr_accessor :follow_redirect
@@ -46,8 +46,12 @@ module Aitch
       @redirect_limit = 5
       @follow_redirect = true
       @user_agent = "Aitch/#{Aitch::VERSION} (http://rubygems.org/gems/aitch)"
-      @default_headers = {}
+      @default_headers = Headers.new
       @base_url = nil
+    end
+
+    def default_headers=(headers)
+      @default_headers = Headers.new(headers)
     end
 
     def to_h

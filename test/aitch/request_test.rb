@@ -146,7 +146,7 @@ class RequestTest < Minitest::Test
   test "sets headers from underscored headers" do
     request = build_request(headers: {content_type: "text/plain"}).request
 
-    assert_equal "text/plain", request["Content-Type"]
+    assert_equal "text/plain", request["content-type"]
   end
 
   test "executes headers with callable protocol" do

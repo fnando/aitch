@@ -1,5 +1,10 @@
 # Changelog
 
+- **unreleased**
+  - Add support for retries.
+  - Change headers to have its own class, abstracting keys (strings, symbols,
+    casing).
+  - Move core extensions to refinements.
 - **2.0.0**
   - Fix error when content type is not available on response.
   - Stop supporting old ruby versions (require 3.0+).

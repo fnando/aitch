@@ -9,14 +9,13 @@ module Minitest
     def register_uri(http_method, url, options = {})
       body = options.fetch(:body, "")
       status = options.fetch(:status, 200)
-      headers = options.fetch(:headers, {})
+      headers = options.fetch(:headers, Aitch::Headers.new)
 
       add_hash_entry(options, headers, :location, "Location")
       add_hash_entry(options, headers, :content_type, "Content-Type")
       add_hash_entry(options, headers, :content_encoding, "Content-Encoding")
 
-      stub_request(http_method, url)
-        .to_return(status: status, body: body, headers: headers)
+      stub_request(http_method, url).to_return(status:, body:, headers:)
     end
 
     def last_request

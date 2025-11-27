@@ -4,6 +4,8 @@ module Aitch
   module Utils
     extend self
 
+    using Ext
+
     MATCHER = /(?<=.)(URI|[A-Z])/
 
     def underscore(string)

@@ -2,21 +2,21 @@
 
 module Aitch
   class Request
-    attr_accessor :request_method, :url, :data, :headers, :options, :redirects
+    attr_accessor :request_method, :url, :data, :options, :redirects
+    attr_reader :headers
 
-    CONTENT_TYPE = "Content-Type"
-    USER_AGENT = "User-Agent"
-    ACCEPT_ENCODING = "Accept-Encoding"
+    CONTENT_TYPE = "content-type"
+    USER_AGENT = "user-agent"
+    ACCEPT_ENCODING = "accept-encoding"
     GZIP_DEFLATE = "gzip,deflate"
     HTTPS = "https"
-    HEADER_SEPARATOR_RE = /[-_]/
     JSON_RE = /\bjson\b/
 
     alias params= data=
     alias body= data=
 
     def initialize(options)
-      self.headers = {}
+      @headers = Headers.new
       self.options = {}
       self.redirects = []
 
@@ -25,6 +25,10 @@ module Aitch
       options.each do |name, value|
         public_send("#{name}=", value)
       end
+    end
+
+    def headers=(headers)
+      @headers = Headers.new(headers)
     end
 
     def perform
@@ -43,7 +47,7 @@ module Aitch
 
     def content_type
       headers[CONTENT_TYPE] ||
-        options.fetch(:default_headers, {})[CONTENT_TYPE]
+        Headers.new(options.fetch(:default_headers, {}))[CONTENT_TYPE]
     end
 
     def request
@@ -100,11 +104,12 @@ module Aitch
     end
 
     private def set_headers(request)
-      all_headers = options.fetch(:default_headers, {}).merge(headers)
+      all_headers = Headers.new(options.fetch(:default_headers, {}))
+                           .to_h
+                           .merge(headers.to_h)
 
       all_headers.each do |name, value|
         value = value.call if value.respond_to?(:call)
-        name = name.to_s.split(HEADER_SEPARATOR_RE).map(&:capitalize).join("-")
         request[name] = value.to_s
       end
     end

@@ -22,7 +22,10 @@ class ConfigurationTest < Minitest::Test
   end
 
   test "sets default headers" do
-    assert_empty(Aitch::Configuration.new.default_headers)
+    config = Aitch::Configuration.new
+    config.default_headers = {content_type: "application/json"}
+
+    assert_equal({"content-type" => "application/json"}, config.default_headers.to_h)
   end
 
   test "configures aitch" do

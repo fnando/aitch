@@ -3,6 +3,8 @@
 require "test_helper"
 
 class ToQueryTest < Minitest::Test
+  using Aitch::Ext
+
   test "converts array" do
     assert_equal "hobbies%5B%5D=Rails&hobbies%5B%5D=coding",
                  %w[Rails coding].to_query("hobbies")
