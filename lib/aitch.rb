@@ -13,10 +13,10 @@ rescue LoadError
   require "aitch/ext/to_query"
 end
 
+require "aitch/ext/string"
 require "aitch/utils"
 require "aitch/uri"
 require "aitch/dsl"
-require "aitch/ext/string"
 require "aitch/namespace"
 require "aitch/location"
 require "aitch/headers"
