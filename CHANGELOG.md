@@ -1,5 +1,7 @@
 # Changelog
 
+- **2.1.1**
+  - Fix issue with loading order.
 - **2.1.0**
   - Add support for retries.
   - Change headers to have its own class, abstracting keys (strings, symbols,
