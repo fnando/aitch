@@ -22,3 +22,9 @@ Gemspec/DevelopmentDependencies:
 
 Minitest/MultipleAssertions:
   Enabled: false
+
+Style/OneClassPerFile:
+  Enabled: false
+
+Style/EmptyClassDefinition:
+  Enabled: false

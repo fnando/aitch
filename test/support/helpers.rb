@@ -15,7 +15,8 @@ module Minitest
       add_hash_entry(options, headers, :content_type, "Content-Type")
       add_hash_entry(options, headers, :content_encoding, "Content-Encoding")
 
-      stub_request(http_method, url).to_return(status:, body:, headers:)
+      stub_request(http_method, url)
+        .to_return(status: status, body: body, headers: headers)
     end
 
     def last_request

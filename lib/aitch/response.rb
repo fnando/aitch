@@ -43,16 +43,16 @@ module Aitch
     end
 
     def success?
-      code >= 200 && code <= 399
+      code.between?(200, 399)
     end
     alias ok? success?
 
     def redirect?
-      code >= 300 && code <= 399
+      code.between?(300, 399)
     end
 
     def error?
-      code >= 400 && code <= 599
+      code.between?(400, 599)
     end
 
     def error

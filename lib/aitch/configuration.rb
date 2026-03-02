@@ -55,8 +55,8 @@ module Aitch
     end
 
     def to_h
-      instance_variables.each_with_object({}) do |name, buffer|
-        buffer[name.to_s.tr("@", "").to_sym] = instance_variable_get(name)
+      instance_variables.to_h do |name|
+        [name.to_s.tr("@", "").to_sym, instance_variable_get(name)]
       end
     end
   end

@@ -56,8 +56,8 @@ module Aitch
     end
 
     refine Hash do
-      # Returns a string representation of the receiver suitable for use as a URL
-      # query string:
+      # Returns a string representation of the receiver suitable for use as a
+      # URL query string:
       #
       #   {name: 'David', nationality: 'Danish'}.to_query
       #   # => "name=David&nationality=Danish"
