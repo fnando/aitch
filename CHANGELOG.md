@@ -1,5 +1,7 @@
 # Changelog
 
+- **2.1.2**
+  - Add `cgi` as direct dependency.
 - **2.1.1**
   - Fix issue with loading order.
 - **2.1.0**
